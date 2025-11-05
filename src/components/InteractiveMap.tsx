@@ -29,7 +29,6 @@ import {
   X
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
-import Image from "next/image";
 
 interface City {
   name: string;
@@ -111,7 +110,7 @@ export default function InteractiveMap() {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === containerRef.current || (e.target as HTMLElement).tagName === "IMG") {
+    if (e.target === containerRef.current || (e.target as HTMLElement).closest('.map-background')) {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     }
@@ -141,62 +140,79 @@ export default function InteractiveMap() {
 
   return (
     <div 
-      className="relative w-full h-screen bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 overflow-hidden"
+      className="relative w-full h-screen bg-[#f5f1e8] overflow-hidden"
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
       ref={containerRef}
-      style={{ fontFamily: "'Cinzel', serif" }}
     >
-      {/* Add Google Font Link */}
-      <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet" />
-      
-      {/* Fantasy Map Background with Parchment Effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50/30 via-transparent to-amber-900/20 pointer-events-none z-0" />
-      
-      {/* Decorative Corner Ornaments */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-amber-800/10 to-transparent rounded-br-full pointer-events-none z-0" />
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-amber-800/10 to-transparent rounded-bl-full pointer-events-none z-0" />
-      <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-amber-800/10 to-transparent rounded-tr-full pointer-events-none z-0" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-amber-800/10 to-transparent rounded-tl-full pointer-events-none z-0" />
-
-      {/* Map Image Background */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-11-05-124517-1762327234395.png"
-          alt="Historical Trade Routes Map"
-          fill
-          className="object-contain"
-          priority
-        />
+      {/* Minimalist World Map Background */}
+      <div className="absolute inset-0 z-0 map-background">
+        <svg 
+          className="w-full h-full" 
+          viewBox="0 0 2000 1000" 
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {/* Simple world map outlines with thin black strokes */}
+          <path 
+            d="M 100 100 L 200 80 L 250 90 L 280 100 L 300 120 L 280 140 L 250 150 L 200 145 L 150 140 L 120 130 Z" 
+            fill="none" 
+            stroke="#2a2a2a" 
+            strokeWidth="1.5" 
+            opacity="0.6"
+          />
+          {/* Europe */}
+          <path d="M 500 250 Q 520 240 540 250 Q 560 260 570 280 Q 575 300 560 310 Q 540 320 520 310 Q 500 300 490 280 Q 485 260 500 250 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* Africa */}
+          <path d="M 520 350 L 550 340 Q 580 340 600 360 L 620 400 Q 630 450 620 500 Q 610 550 580 580 Q 550 600 520 590 L 480 570 Q 450 540 440 500 Q 435 450 450 400 Q 470 360 500 350 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* Middle East */}
+          <path d="M 650 300 L 700 290 Q 730 295 750 310 L 770 340 Q 775 370 760 390 L 730 400 Q 700 405 670 395 L 650 380 Q 640 360 645 330 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* Asia */}
+          <path d="M 800 200 L 900 180 Q 1000 190 1100 220 L 1200 250 Q 1300 280 1350 320 L 1380 370 Q 1390 420 1370 460 L 1320 490 Q 1250 510 1150 500 L 1000 480 Q 900 460 850 420 L 800 370 Q 780 320 790 270 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* Southeast Asia Islands */}
+          <ellipse cx="1400" cy="520" rx="60" ry="40" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          <ellipse cx="1500" cy="550" rx="40" ry="30" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          <ellipse cx="1550" cy="580" rx="35" ry="25" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* North America */}
+          <path d="M 150 200 L 250 180 Q 350 190 400 220 L 420 260 Q 430 310 410 350 L 370 380 Q 320 390 270 380 L 200 360 Q 150 330 130 280 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* South America */}
+          <path d="M 350 450 L 400 440 Q 430 445 450 470 L 460 520 Q 465 580 450 630 L 420 670 Q 390 690 360 680 L 330 660 Q 310 630 305 580 Q 300 520 320 470 Z" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+          
+          {/* Australia */}
+          <ellipse cx="1500" cy="750" rx="120" ry="80" fill="none" stroke="#2a2a2a" strokeWidth="1.5" opacity="0.6" />
+        </svg>
       </div>
 
-      {/* Parchment Texture Overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
-
-      {/* Zoom Controls with Fantasy Styling */}
+      {/* Zoom Controls */}
       <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
         <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleZoomIn}
-          className="bg-amber-50/95 backdrop-blur-md p-2 rounded-lg shadow-xl hover:shadow-2xl hover:bg-amber-100 transition-all border-2 border-amber-800/30"
+          className="bg-white p-2 rounded-lg shadow-md hover:shadow-lg transition-all border border-gray-300"
           aria-label="Zoom in"
         >
-          <ZoomIn className="w-4 h-4 text-amber-900" />
+          <ZoomIn className="w-5 h-5 text-gray-700" />
         </motion.button>
         <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleZoomOut}
-          className="bg-amber-50/95 backdrop-blur-md p-2 rounded-lg shadow-xl hover:shadow-2xl hover:bg-amber-100 transition-all border-2 border-amber-800/30"
+          className="bg-white p-2 rounded-lg shadow-md hover:shadow-lg transition-all border border-gray-300"
           aria-label="Zoom out"
         >
-          <ZoomOut className="w-4 h-4 text-amber-900" />
+          <ZoomOut className="w-5 h-5 text-gray-700" />
         </motion.button>
-        <div className="bg-amber-50/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-xl text-xs font-semibold text-amber-900 border-2 border-amber-800/30">
+        <div className="bg-white px-3 py-1.5 rounded-lg shadow-md text-sm font-medium text-gray-700 border border-gray-300">
           {Math.round(zoom * 100)}%
         </div>
       </div>
@@ -212,23 +228,9 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Connection Lines with Fantasy Styling */}
+        {/* Connection Lines */}
         {selectedCity && (
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
-            <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#92400e" stopOpacity="0.2" />
-                <stop offset="50%" stopColor="#b45309" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#92400e" stopOpacity="0.2" />
-              </linearGradient>
-              <filter id="lineGlow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
             {getConnectedCities(selectedCity).map((connectedCity) => {
               const x1 = `${selectedCity.x}%`;
               const y1 = `${selectedCity.y}%`;
@@ -241,23 +243,21 @@ export default function InteractiveMap() {
                   y1={y1}
                   x2={x2}
                   y2={y2}
-                  stroke="url(#lineGradient)"
-                  strokeWidth="3"
-                  strokeDasharray="8 4"
-                  filter="url(#lineGlow)"
+                  stroke="#c2703b"
+                  strokeWidth="2"
+                  strokeDasharray="6 4"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
+                  animate={{ pathLength: 1, opacity: 0.8 }}
                   exit={{ pathLength: 0, opacity: 0 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
                 />
               );
             })}
           </svg>
         )}
 
-        {/* City Markers with Fantasy Styling */}
+        {/* City Markers - Minimalist Style */}
         {cities.map((city) => {
-          const CityIcon = city.icon;
           const isSelected = selectedCity?.name === city.name;
           const isConnected = selectedCity?.connections?.includes(city.name);
           
@@ -274,98 +274,41 @@ export default function InteractiveMap() {
               onHoverStart={() => setHoveredCity(city)}
               onHoverEnd={() => setHoveredCity(null)}
               onClick={() => handleCityClick(city)}
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {/* Fantasy-styled City Marker */}
               <motion.div
                 className="relative flex items-center gap-2"
                 animate={{
-                  scale: isSelected ? 1.6 : hoveredCity?.name === city.name ? 1.35 : isConnected ? 1.25 : 1,
+                  scale: isSelected ? 1.3 : hoveredCity?.name === city.name ? 1.15 : isConnected ? 1.1 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {/* Magical Glow Effect */}
-                <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-2xl`}
-                  animate={{
-                    scale: isSelected ? [1, 3, 1] : [1, 2.5, 1],
-                    opacity: isSelected ? [0.9, 0.4, 0.9] : [0.7, 0.2, 0.7],
-                  }}
-                  transition={{
-                    duration: isSelected ? 2.5 : 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                
-                {/* Inner Glow Pulse */}
-                <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-lg opacity-80`}
-                  animate={{
-                    scale: [1, 1.8, 1],
-                  }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.7,
-                  }}
-                />
+                {/* Simple Orange/Golden Circle Marker */}
+                <div className="relative bg-[#d97e3f] rounded-full w-3 h-3 border-2 border-white shadow-md" />
 
-                {/* Fantasy Icon Container with Border */}
-                <div className={`relative bg-gradient-to-br from-amber-50 to-amber-100 rounded-full p-2 shadow-2xl border-2 ${city.borderColor} ring-2 ring-amber-900/20`}>
-                  <CityIcon 
-                    className={`w-5 h-5 ${city.iconColor} drop-shadow-md`} 
-                    strokeWidth={2.5}
-                    fill="currentColor"
-                    fillOpacity={0.3}
-                  />
-                </div>
-
-                {/* Fantasy-styled Name Label with Medieval Font */}
-                <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap">
-                  <div className="relative bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 text-amber-900 px-3 py-1.5 rounded-md text-sm font-semibold shadow-xl border-2 border-amber-800/40 pointer-events-none backdrop-blur-sm" style={{ fontFamily: "'Cinzel', serif" }}>
-                    {/* Decorative corners */}
-                    <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
-                    <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
-                    <div className="absolute -bottom-0.5 -left-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
-                    <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
+                {/* City Name Label */}
+                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap">
+                  <div className="bg-white/90 backdrop-blur-sm text-gray-900 px-2 py-0.5 rounded text-sm font-medium shadow-sm border border-gray-200">
                     {city.name}
                   </div>
                 </div>
 
-                {/* Magical Selection Ring */}
+                {/* Selection Ring */}
                 {isSelected && (
-                  <>
-                    <motion.div
-                      className={`absolute inset-0 border-3 border-amber-600 rounded-full`}
-                      initial={{ scale: 1, opacity: 0 }}
-                      animate={{ 
-                        scale: [1, 2.2, 1],
-                        opacity: [1, 0, 1]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeOut"
-                      }}
-                    />
-                    <motion.div
-                      className={`absolute inset-0 border-2 border-amber-400 rounded-full`}
-                      initial={{ scale: 1, opacity: 0 }}
-                      animate={{ 
-                        scale: [1, 2.5, 1],
-                        opacity: [0.8, 0, 0.8]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeOut",
-                        delay: 0.5
-                      }}
-                    />
-                  </>
+                  <motion.div
+                    className="absolute inset-0 border-2 border-[#d97e3f] rounded-full -m-1"
+                    initial={{ scale: 1, opacity: 0 }}
+                    animate={{ 
+                      scale: [1, 1.8, 1],
+                      opacity: [0.8, 0, 0.8]
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeOut"
+                    }}
+                  />
                 )}
               </motion.div>
             </motion.div>
@@ -373,29 +316,23 @@ export default function InteractiveMap() {
         })}
       </motion.div>
 
-      {/* Fantasy-styled Title Overlay with Medieval Font */}
+      {/* Title Overlay */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="absolute top-4 right-4 left-4 text-center md:left-auto md:right-4 md:text-right z-20 pointer-events-none"
+        className="absolute top-4 right-4 z-20 pointer-events-none"
       >
-        <div className="inline-block relative bg-gradient-to-br from-amber-100/95 via-amber-50/95 to-amber-100/95 backdrop-blur-md px-6 py-3 rounded-xl shadow-2xl border-2 border-amber-800/40">
-          {/* Decorative corners */}
-          <div className="absolute -top-1 -left-1 w-3 h-3 bg-amber-800 rounded-full" />
-          <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-800 rounded-full" />
-          <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-800 rounded-full" />
-          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-amber-800 rounded-full" />
-          
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1" style={{ fontFamily: "'Cinzel', serif" }}>
-            Ancient Trade Routes
+        <div className="bg-white/95 backdrop-blur-sm px-5 py-3 rounded-lg shadow-lg border border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900 mb-0.5">
+            Historic Trade Routes
           </h1>
-          <p className="text-xs md:text-sm text-amber-900 drop-shadow font-medium" style={{ fontFamily: "'Cinzel', serif" }}>
-            Explore historic cities along the Silk Road and beyond
+          <p className="text-sm text-gray-600">
+            Major cities and their connections
           </p>
         </div>
       </motion.div>
 
-      {/* Fantasy-styled Details Panel with Medieval Font */}
+      {/* Details Panel */}
       <AnimatePresence>
         {selectedCity && (
           <motion.div
@@ -403,65 +340,49 @@ export default function InteractiveMap() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xl bg-gradient-to-br from-amber-50/98 via-amber-100/98 to-amber-50/98 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden z-30 border-2 border-amber-800/40 mx-4"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white rounded-lg shadow-xl overflow-hidden z-30 border border-gray-200 mx-4"
           >
             <div className="flex flex-col">
-              {/* Decorative header corners */}
-              <div className="absolute top-0 left-0 w-2 h-2 bg-amber-800 rounded-full z-10" />
-              <div className="absolute top-0 right-0 w-2 h-2 bg-amber-800 rounded-full z-10" />
-              
               {/* Header */}
-              <div className={`${selectedCity.bgColor} p-3 text-white relative flex items-center justify-between`}>
-                <div className="flex items-center gap-2">
-                  {(() => {
-                    const Icon = selectedCity.icon;
-                    return <Icon className="w-5 h-5 drop-shadow-md" strokeWidth={2} />;
-                  })()}
-                  <div>
-                    <h2 className="text-sm font-bold drop-shadow-md" style={{ fontFamily: "'Cinzel', serif" }}>{selectedCity.name}</h2>
-                    <p className="text-white/95 text-xs drop-shadow font-medium" style={{ fontFamily: "'Cinzel', serif" }}>{selectedCity.description}</p>
-                  </div>
+              <div className="bg-[#d97e3f] p-4 text-white flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold">{selectedCity.name}</h2>
+                  <p className="text-white/90 text-sm">{selectedCity.description}</p>
                 </div>
                 <button
                   onClick={() => setSelectedCity(null)}
-                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  className="p-1.5 hover:bg-white/20 rounded transition-colors"
                   aria-label="Close"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Content */}
-              <div className="p-3">
-                <h3 className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ fontFamily: "'Cinzel', serif" }}>
-                  <div className="w-1 h-3 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full" />
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
                   Connected Cities ({getConnectedCities(selectedCity).length})
                 </h3>
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {getConnectedCities(selectedCity).map((connectedCity) => {
-                    const ConnectedIcon = connectedCity.icon;
-                    return (
-                      <motion.button
-                        key={connectedCity.name}
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setSelectedCity(connectedCity)}
-                        className="flex-shrink-0 flex flex-col items-center gap-1.5 p-2 bg-gradient-to-br from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-amber-800/30 min-w-[90px]"
-                      >
-                        <div className={`p-2 ${connectedCity.bgColor} rounded-lg shadow-md`}>
-                          <ConnectedIcon className="w-4 h-4 text-white drop-shadow" strokeWidth={2.5} />
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {getConnectedCities(selectedCity).map((connectedCity) => (
+                    <motion.button
+                      key={connectedCity.name}
+                      whileHover={{ scale: 1.03, y: -2 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setSelectedCity(connectedCity)}
+                      className="flex-shrink-0 flex flex-col items-center gap-2 p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all shadow-sm hover:shadow-md border border-gray-200 min-w-[100px]"
+                    >
+                      <div className="w-3 h-3 bg-[#d97e3f] rounded-full border-2 border-white shadow-sm" />
+                      <div className="text-center">
+                        <div className="font-semibold text-gray-900 text-sm">
+                          {connectedCity.name}
                         </div>
-                        <div className="text-center">
-                          <div className="font-semibold text-amber-900 text-xs" style={{ fontFamily: "'Cinzel', serif" }}>
-                            {connectedCity.name}
-                          </div>
-                          <div className="text-[10px] text-amber-800 mt-0.5 line-clamp-2 font-medium" style={{ fontFamily: "'Cinzel', serif" }}>
-                            {connectedCity.description}
-                          </div>
+                        <div className="text-xs text-gray-600 mt-1 line-clamp-2">
+                          {connectedCity.description}
                         </div>
-                      </motion.button>
-                    );
-                  })}
+                      </div>
+                    </motion.button>
+                  ))}
                 </div>
               </div>
             </div>
