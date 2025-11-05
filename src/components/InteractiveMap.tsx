@@ -185,13 +185,13 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Map Background */}
+        {/* Map Background - Updated to use accurate map */}
         <div className="absolute inset-0 pointer-events-none">
           <Image
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/063dddeb-85b0-4ba1-bd6a-66de9af690b5/generated_images/illustrated-stylized-map-of-africa-middl-e0ae63ea-20251104164920.jpg"
+            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-11-05-093914-1762321448814.png"
             alt="Interactive Map"
             fill
-            className="object-cover"
+            className="object-contain"
             priority
             draggable={false}
           />
@@ -264,7 +264,7 @@ export default function InteractiveMap() {
             >
               {/* City Icon Marker with Enhanced Styling */}
               <motion.div
-                className="relative"
+                className="relative flex items-center gap-2"
                 animate={{
                   scale: isSelected ? 1.6 : hoveredCity?.name === city.name ? 1.35 : isConnected ? 1.25 : 1,
                 }}
@@ -308,6 +308,11 @@ export default function InteractiveMap() {
                   />
                 </div>
 
+                {/* City Name Label - Always Visible */}
+                <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap bg-gradient-to-r from-amber-900 to-amber-800 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg border border-amber-700 pointer-events-none">
+                  {city.name}
+                </div>
+
                 {/* Selection Ring */}
                 {isSelected && (
                   <motion.div
@@ -325,21 +330,6 @@ export default function InteractiveMap() {
                   />
                 )}
               </motion.div>
-
-              {/* Hover Label with Enhanced Design */}
-              <AnimatePresence>
-                {hoveredCity?.name === city.name && !selectedCity && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                    className="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gradient-to-r from-slate-900 to-slate-800 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-2xl z-10 pointer-events-none border border-slate-700"
-                  >
-                    {city.name}
-                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-900 rotate-45 border-l border-t border-slate-700" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           );
         })}
@@ -359,71 +349,69 @@ export default function InteractiveMap() {
         </p>
       </motion.div>
 
-      {/* City Details Panel */}
+      {/* City Details Panel - Compact Bottom Panel */}
       <AnimatePresence>
         {selectedCity && (
           <motion.div
-            initial={{ opacity: 0, x: 300 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 300 }}
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute top-4 right-4 bottom-4 w-80 bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-30 border border-slate-200"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-30 border border-slate-200 mx-4"
           >
-            <div className="h-full flex flex-col">
+            <div className="flex flex-col">
               {/* Header */}
-              <div className={`${selectedCity.bgColor} p-6 text-white relative`}>
+              <div className={`${selectedCity.bgColor} p-4 text-white relative flex items-center justify-between`}>
+                <div className="flex items-center gap-3">
+                  {(() => {
+                    const Icon = selectedCity.icon;
+                    return <Icon className="w-8 h-8" strokeWidth={2} />;
+                  })()}
+                  <div>
+                    <h2 className="text-xl font-bold">{selectedCity.name}</h2>
+                    <p className="text-white/95 text-sm">{selectedCity.description}</p>
+                  </div>
+                </div>
                 <button
                   onClick={() => setSelectedCity(null)}
-                  className="absolute top-4 right-4 p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-5 h-5" />
                 </button>
-                <div className="flex items-center gap-3 mb-2">
-                  {(() => {
-                    const Icon = selectedCity.icon;
-                    return <Icon className="w-9 h-9" strokeWidth={2} />;
-                  })()}
-                  <h2 className="text-2xl font-bold">{selectedCity.name}</h2>
-                </div>
-                <p className="text-white/95 text-sm">{selectedCity.description}</p>
               </div>
 
-              {/* Content */}
-              <div className="flex-1 p-6 overflow-y-auto">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-sm font-bold text-slate-600 uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                      Connected Cities ({getConnectedCities(selectedCity).length})
-                    </h3>
-                    <div className="space-y-2">
-                      {getConnectedCities(selectedCity).map((connectedCity) => {
-                        const ConnectedIcon = connectedCity.icon;
-                        return (
-                          <motion.button
-                            key={connectedCity.name}
-                            whileHover={{ scale: 1.02, x: 6 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => setSelectedCity(connectedCity)}
-                            className="w-full flex items-center gap-3 p-3 bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 rounded-xl transition-all text-left shadow-sm hover:shadow-md border border-slate-200"
-                          >
-                            <div className={`p-2.5 ${connectedCity.bgColor} rounded-xl shadow-md`}>
-                              <ConnectedIcon className="w-5 h-5 text-white" strokeWidth={2.5} />
-                            </div>
-                            <div className="flex-1">
-                              <div className="font-bold text-slate-900">
-                                {connectedCity.name}
-                              </div>
-                              <div className="text-xs text-slate-600 mt-0.5">
-                                {connectedCity.description}
-                              </div>
-                            </div>
-                          </motion.button>
-                        );
-                      })}
-                    </div>
-                  </div>
+              {/* Content - Horizontal Scroll */}
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-slate-600 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <div className="w-1 h-4 bg-amber-500 rounded-full" />
+                  Connected Cities ({getConnectedCities(selectedCity).length})
+                </h3>
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {getConnectedCities(selectedCity).map((connectedCity) => {
+                    const ConnectedIcon = connectedCity.icon;
+                    return (
+                      <motion.button
+                        key={connectedCity.name}
+                        whileHover={{ scale: 1.05, y: -4 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setSelectedCity(connectedCity)}
+                        className="flex-shrink-0 flex flex-col items-center gap-2 p-3 bg-gradient-to-br from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 rounded-xl transition-all shadow-md hover:shadow-lg border border-slate-200 min-w-[120px]"
+                      >
+                        <div className={`p-3 ${connectedCity.bgColor} rounded-xl shadow-md`}>
+                          <ConnectedIcon className="w-6 h-6 text-white" strokeWidth={2.5} />
+                        </div>
+                        <div className="text-center">
+                          <div className="font-bold text-slate-900 text-sm">
+                            {connectedCity.name}
+                          </div>
+                          <div className="text-xs text-slate-600 mt-0.5 line-clamp-2">
+                            {connectedCity.description}
+                          </div>
+                        </div>
+                      </motion.button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
