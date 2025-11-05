@@ -148,7 +148,11 @@ export default function InteractiveMap() {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
       ref={containerRef}
+      style={{ fontFamily: "'Cinzel', serif" }}
     >
+      {/* Add Google Font Link */}
+      <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet" />
+      
       {/* Fantasy Map Background with Parchment Effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50/30 via-transparent to-amber-900/20 pointer-events-none z-0" />
       
@@ -161,16 +165,16 @@ export default function InteractiveMap() {
       {/* Map Image Background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1762326863969.png?width=8000&height=8000&resize=contain"
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-11-05-124517-1762327234395.png"
           alt="Historical Trade Routes Map"
           fill
-          className="object-contain opacity-40 sepia"
+          className="object-contain"
           priority
         />
       </div>
 
       {/* Parchment Texture Overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] opacity-30 pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
 
       {/* Zoom Controls with Fantasy Styling */}
       <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
@@ -192,7 +196,7 @@ export default function InteractiveMap() {
         >
           <ZoomOut className="w-4 h-4 text-amber-900" />
         </motion.button>
-        <div className="bg-amber-50/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-xl text-xs font-bold text-amber-900 border-2 border-amber-800/30">
+        <div className="bg-amber-50/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-xl text-xs font-semibold text-amber-900 border-2 border-amber-800/30">
           {Math.round(zoom * 100)}%
         </div>
       </div>
@@ -319,9 +323,9 @@ export default function InteractiveMap() {
                   />
                 </div>
 
-                {/* Fantasy-styled Name Label */}
+                {/* Fantasy-styled Name Label with Medieval Font */}
                 <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap">
-                  <div className="relative bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 text-amber-900 px-3 py-1 rounded-md text-xs font-bold shadow-xl border-2 border-amber-800/40 pointer-events-none backdrop-blur-sm">
+                  <div className="relative bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 text-amber-900 px-3 py-1.5 rounded-md text-sm font-semibold shadow-xl border-2 border-amber-800/40 pointer-events-none backdrop-blur-sm" style={{ fontFamily: "'Cinzel', serif" }}>
                     {/* Decorative corners */}
                     <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
                     <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
@@ -369,7 +373,7 @@ export default function InteractiveMap() {
         })}
       </motion.div>
 
-      {/* Fantasy-styled Title Overlay */}
+      {/* Fantasy-styled Title Overlay with Medieval Font */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -382,16 +386,16 @@ export default function InteractiveMap() {
           <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-800 rounded-full" />
           <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-amber-800 rounded-full" />
           
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1" style={{ fontFamily: "'Cinzel', serif" }}>
             Ancient Trade Routes
           </h1>
-          <p className="text-xs md:text-sm text-amber-900 drop-shadow font-semibold">
+          <p className="text-xs md:text-sm text-amber-900 drop-shadow font-medium" style={{ fontFamily: "'Cinzel', serif" }}>
             Explore historic cities along the Silk Road and beyond
           </p>
         </div>
       </motion.div>
 
-      {/* Fantasy-styled Details Panel */}
+      {/* Fantasy-styled Details Panel with Medieval Font */}
       <AnimatePresence>
         {selectedCity && (
           <motion.div
@@ -414,8 +418,8 @@ export default function InteractiveMap() {
                     return <Icon className="w-5 h-5 drop-shadow-md" strokeWidth={2} />;
                   })()}
                   <div>
-                    <h2 className="text-sm font-bold drop-shadow-md">{selectedCity.name}</h2>
-                    <p className="text-white/95 text-xs drop-shadow">{selectedCity.description}</p>
+                    <h2 className="text-sm font-bold drop-shadow-md" style={{ fontFamily: "'Cinzel', serif" }}>{selectedCity.name}</h2>
+                    <p className="text-white/95 text-xs drop-shadow font-medium" style={{ fontFamily: "'Cinzel', serif" }}>{selectedCity.description}</p>
                   </div>
                 </div>
                 <button
@@ -429,7 +433,7 @@ export default function InteractiveMap() {
 
               {/* Content */}
               <div className="p-3">
-                <h3 className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <h3 className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5" style={{ fontFamily: "'Cinzel', serif" }}>
                   <div className="w-1 h-3 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full" />
                   Connected Cities ({getConnectedCities(selectedCity).length})
                 </h3>
@@ -448,10 +452,10 @@ export default function InteractiveMap() {
                           <ConnectedIcon className="w-4 h-4 text-white drop-shadow" strokeWidth={2.5} />
                         </div>
                         <div className="text-center">
-                          <div className="font-bold text-amber-900 text-xs">
+                          <div className="font-semibold text-amber-900 text-xs" style={{ fontFamily: "'Cinzel', serif" }}>
                             {connectedCity.name}
                           </div>
-                          <div className="text-[10px] text-amber-800 mt-0.5 line-clamp-2">
+                          <div className="text-[10px] text-amber-800 mt-0.5 line-clamp-2 font-medium" style={{ fontFamily: "'Cinzel', serif" }}>
                             {connectedCity.description}
                           </div>
                         </div>
