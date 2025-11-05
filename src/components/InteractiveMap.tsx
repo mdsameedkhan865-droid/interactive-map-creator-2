@@ -29,6 +29,7 @@ import {
   X
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
+import Image from "next/image";
 
 interface City {
   name: string;
@@ -140,7 +141,7 @@ export default function InteractiveMap() {
 
   return (
     <div 
-      className="relative w-full h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden"
+      className="relative w-full h-screen bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 overflow-hidden"
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -148,27 +149,50 @@ export default function InteractiveMap() {
       onMouseLeave={handleMouseUp}
       ref={containerRef}
     >
-      {/* Zoom Controls */}
+      {/* Fantasy Map Background with Parchment Effect */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-50/30 via-transparent to-amber-900/20 pointer-events-none z-0" />
+      
+      {/* Decorative Corner Ornaments */}
+      <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-amber-800/10 to-transparent rounded-br-full pointer-events-none z-0" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-amber-800/10 to-transparent rounded-bl-full pointer-events-none z-0" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-amber-800/10 to-transparent rounded-tr-full pointer-events-none z-0" />
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-amber-800/10 to-transparent rounded-tl-full pointer-events-none z-0" />
+
+      {/* Map Image Background */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1762326863969.png?width=8000&height=8000&resize=contain"
+          alt="Historical Trade Routes Map"
+          fill
+          className="object-contain opacity-40 sepia"
+          priority
+        />
+      </div>
+
+      {/* Parchment Texture Overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] opacity-30 pointer-events-none z-0" />
+
+      {/* Zoom Controls with Fantasy Styling */}
       <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleZoomIn}
-          className="bg-white/95 backdrop-blur-md p-2 rounded-lg shadow-lg hover:shadow-xl hover:bg-white transition-all border border-slate-200"
+          className="bg-amber-50/95 backdrop-blur-md p-2 rounded-lg shadow-xl hover:shadow-2xl hover:bg-amber-100 transition-all border-2 border-amber-800/30"
           aria-label="Zoom in"
         >
-          <ZoomIn className="w-4 h-4 text-slate-700" />
+          <ZoomIn className="w-4 h-4 text-amber-900" />
         </motion.button>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleZoomOut}
-          className="bg-white/95 backdrop-blur-md p-2 rounded-lg shadow-lg hover:shadow-xl hover:bg-white transition-all border border-slate-200"
+          className="bg-amber-50/95 backdrop-blur-md p-2 rounded-lg shadow-xl hover:shadow-2xl hover:bg-amber-100 transition-all border-2 border-amber-800/30"
           aria-label="Zoom out"
         >
-          <ZoomOut className="w-4 h-4 text-slate-700" />
+          <ZoomOut className="w-4 h-4 text-amber-900" />
         </motion.button>
-        <div className="bg-white/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-lg text-xs font-bold text-slate-700 border border-slate-200">
+        <div className="bg-amber-50/95 backdrop-blur-md px-2 py-1 rounded-lg shadow-xl text-xs font-bold text-amber-900 border-2 border-amber-800/30">
           {Math.round(zoom * 100)}%
         </div>
       </div>
@@ -184,17 +208,17 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Connection Lines */}
+        {/* Connection Lines with Fantasy Styling */}
         {selectedCity && (
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
             <defs>
               <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
-                <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
+                <stop offset="0%" stopColor="#92400e" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#b45309" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#92400e" stopOpacity="0.2" />
               </linearGradient>
               <filter id="lineGlow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -214,20 +238,20 @@ export default function InteractiveMap() {
                   x2={x2}
                   y2={y2}
                   stroke="url(#lineGradient)"
-                  strokeWidth="4"
-                  strokeDasharray="10 5"
+                  strokeWidth="3"
+                  strokeDasharray="8 4"
                   filter="url(#lineGlow)"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   exit={{ pathLength: 0, opacity: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
                 />
               );
             })}
           </svg>
         )}
 
-        {/* City Markers */}
+        {/* City Markers with Fantasy Styling */}
         {cities.map((city) => {
           const CityIcon = city.icon;
           const isSelected = selectedCity?.name === city.name;
@@ -249,7 +273,7 @@ export default function InteractiveMap() {
               whileHover={{ scale: 1.25 }}
               whileTap={{ scale: 0.9 }}
             >
-              {/* City Icon Marker with Enhanced Styling */}
+              {/* Fantasy-styled City Marker */}
               <motion.div
                 className="relative flex items-center gap-2"
                 animate={{
@@ -257,64 +281,87 @@ export default function InteractiveMap() {
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {/* Outer Glow Ring */}
+                {/* Magical Glow Effect */}
                 <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-xl`}
+                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-2xl`}
                   animate={{
-                    scale: isSelected ? [1, 2.5, 1] : [1, 2, 1],
-                    opacity: isSelected ? [0.8, 0.3, 0.8] : [0.6, 0.1, 0.6],
+                    scale: isSelected ? [1, 3, 1] : [1, 2.5, 1],
+                    opacity: isSelected ? [0.9, 0.4, 0.9] : [0.7, 0.2, 0.7],
                   }}
                   transition={{
-                    duration: isSelected ? 2 : 2.5,
+                    duration: isSelected ? 2.5 : 3,
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
                 />
                 
-                {/* Middle Glow */}
+                {/* Inner Glow Pulse */}
                 <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-md opacity-70`}
+                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-lg opacity-80`}
                   animate={{
-                    scale: [1, 1.5, 1],
+                    scale: [1, 1.8, 1],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 2.5,
                     repeat: Infinity,
                     ease: "easeInOut",
-                    delay: 0.5,
+                    delay: 0.7,
                   }}
                 />
 
-                {/* Icon Container with Background */}
-                <div className={`relative bg-white rounded-full p-1.5 shadow-lg border ${city.borderColor}`}>
+                {/* Fantasy Icon Container with Border */}
+                <div className={`relative bg-gradient-to-br from-amber-50 to-amber-100 rounded-full p-2 shadow-2xl border-2 ${city.borderColor} ring-2 ring-amber-900/20`}>
                   <CityIcon 
-                    className={`w-4 h-4 ${city.iconColor}`} 
+                    className={`w-5 h-5 ${city.iconColor} drop-shadow-md`} 
                     strokeWidth={2.5}
                     fill="currentColor"
-                    fillOpacity={0.2}
+                    fillOpacity={0.3}
                   />
                 </div>
 
-                {/* City Name Label - Always Visible */}
-                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-gradient-to-r from-amber-900 to-amber-800 text-white px-2 py-0.5 rounded text-xs font-semibold shadow-md border border-amber-700 pointer-events-none">
-                  {city.name}
+                {/* Fantasy-styled Name Label */}
+                <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap">
+                  <div className="relative bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 text-amber-900 px-3 py-1 rounded-md text-xs font-bold shadow-xl border-2 border-amber-800/40 pointer-events-none backdrop-blur-sm">
+                    {/* Decorative corners */}
+                    <div className="absolute -top-0.5 -left-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
+                    <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
+                    <div className="absolute -bottom-0.5 -left-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
+                    <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-amber-800 rounded-full" />
+                    {city.name}
+                  </div>
                 </div>
 
-                {/* Selection Ring */}
+                {/* Magical Selection Ring */}
                 {isSelected && (
-                  <motion.div
-                    className={`absolute inset-0 border-2 ${city.borderColor} rounded-full`}
-                    initial={{ scale: 1, opacity: 0 }}
-                    animate={{ 
-                      scale: [1, 1.8, 1],
-                      opacity: [0.8, 0, 0.8]
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "easeOut"
-                    }}
-                  />
+                  <>
+                    <motion.div
+                      className={`absolute inset-0 border-3 border-amber-600 rounded-full`}
+                      initial={{ scale: 1, opacity: 0 }}
+                      animate={{ 
+                        scale: [1, 2.2, 1],
+                        opacity: [1, 0, 1]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeOut"
+                      }}
+                    />
+                    <motion.div
+                      className={`absolute inset-0 border-2 border-amber-400 rounded-full`}
+                      initial={{ scale: 1, opacity: 0 }}
+                      animate={{ 
+                        scale: [1, 2.5, 1],
+                        opacity: [0.8, 0, 0.8]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                        delay: 0.5
+                      }}
+                    />
+                  </>
                 )}
               </motion.div>
             </motion.div>
@@ -322,21 +369,29 @@ export default function InteractiveMap() {
         })}
       </motion.div>
 
-      {/* Title Overlay with Enhanced Design */}
+      {/* Fantasy-styled Title Overlay */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         className="absolute top-4 right-4 left-4 text-center md:left-auto md:right-4 md:text-right z-20 pointer-events-none"
       >
-        <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1">
-          Ancient Trade Routes
-        </h1>
-        <p className="text-xs md:text-sm text-slate-800 drop-shadow font-semibold">
-          Explore historic cities along the Silk Road and beyond
-        </p>
+        <div className="inline-block relative bg-gradient-to-br from-amber-100/95 via-amber-50/95 to-amber-100/95 backdrop-blur-md px-6 py-3 rounded-xl shadow-2xl border-2 border-amber-800/40">
+          {/* Decorative corners */}
+          <div className="absolute -top-1 -left-1 w-3 h-3 bg-amber-800 rounded-full" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-800 rounded-full" />
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-800 rounded-full" />
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-amber-800 rounded-full" />
+          
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1">
+            Ancient Trade Routes
+          </h1>
+          <p className="text-xs md:text-sm text-amber-900 drop-shadow font-semibold">
+            Explore historic cities along the Silk Road and beyond
+          </p>
+        </div>
       </motion.div>
 
-      {/* City Details Panel - Compact Bottom Panel */}
+      {/* Fantasy-styled Details Panel */}
       <AnimatePresence>
         {selectedCity && (
           <motion.div
@@ -344,19 +399,23 @@ export default function InteractiveMap() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xl bg-white/98 backdrop-blur-xl rounded-xl shadow-xl overflow-hidden z-30 border border-slate-200 mx-4"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xl bg-gradient-to-br from-amber-50/98 via-amber-100/98 to-amber-50/98 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden z-30 border-2 border-amber-800/40 mx-4"
           >
             <div className="flex flex-col">
+              {/* Decorative header corners */}
+              <div className="absolute top-0 left-0 w-2 h-2 bg-amber-800 rounded-full z-10" />
+              <div className="absolute top-0 right-0 w-2 h-2 bg-amber-800 rounded-full z-10" />
+              
               {/* Header */}
               <div className={`${selectedCity.bgColor} p-3 text-white relative flex items-center justify-between`}>
                 <div className="flex items-center gap-2">
                   {(() => {
                     const Icon = selectedCity.icon;
-                    return <Icon className="w-5 h-5" strokeWidth={2} />;
+                    return <Icon className="w-5 h-5 drop-shadow-md" strokeWidth={2} />;
                   })()}
                   <div>
-                    <h2 className="text-sm font-bold">{selectedCity.name}</h2>
-                    <p className="text-white/95 text-xs">{selectedCity.description}</p>
+                    <h2 className="text-sm font-bold drop-shadow-md">{selectedCity.name}</h2>
+                    <p className="text-white/95 text-xs drop-shadow">{selectedCity.description}</p>
                   </div>
                 </div>
                 <button
@@ -368,10 +427,10 @@ export default function InteractiveMap() {
                 </button>
               </div>
 
-              {/* Content - Horizontal Scroll */}
+              {/* Content */}
               <div className="p-3">
-                <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <div className="w-0.5 h-3 bg-amber-500 rounded-full" />
+                <h3 className="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <div className="w-1 h-3 bg-gradient-to-b from-amber-600 to-amber-800 rounded-full" />
                   Connected Cities ({getConnectedCities(selectedCity).length})
                 </h3>
                 <div className="flex gap-2 overflow-x-auto pb-2">
@@ -383,16 +442,16 @@ export default function InteractiveMap() {
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setSelectedCity(connectedCity)}
-                        className="flex-shrink-0 flex flex-col items-center gap-1.5 p-2 bg-gradient-to-br from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 rounded-lg transition-all shadow-sm hover:shadow-md border border-slate-200 min-w-[90px]"
+                        className="flex-shrink-0 flex flex-col items-center gap-1.5 p-2 bg-gradient-to-br from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 rounded-lg transition-all shadow-lg hover:shadow-xl border-2 border-amber-800/30 min-w-[90px]"
                       >
-                        <div className={`p-2 ${connectedCity.bgColor} rounded-lg shadow-sm`}>
-                          <ConnectedIcon className="w-4 h-4 text-white" strokeWidth={2.5} />
+                        <div className={`p-2 ${connectedCity.bgColor} rounded-lg shadow-md`}>
+                          <ConnectedIcon className="w-4 h-4 text-white drop-shadow" strokeWidth={2.5} />
                         </div>
                         <div className="text-center">
-                          <div className="font-bold text-slate-900 text-xs">
+                          <div className="font-bold text-amber-900 text-xs">
                             {connectedCity.name}
                           </div>
-                          <div className="text-[10px] text-slate-600 mt-0.5 line-clamp-2">
+                          <div className="text-[10px] text-amber-800 mt-0.5 line-clamp-2">
                             {connectedCity.description}
                           </div>
                         </div>
