@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { 
   Building2, 
   Ship, 
@@ -111,7 +110,7 @@ export default function InteractiveMap() {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === containerRef.current || (e.target as HTMLElement).tagName === "IMG") {
+    if (e.target === containerRef.current || (e.target as HTMLElement).tagName === "DIV") {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     }
@@ -141,35 +140,41 @@ export default function InteractiveMap() {
 
   return (
     <div 
-      className="relative w-full h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 overflow-hidden"
+      className="relative w-full h-screen bg-gradient-to-br from-blue-200 via-green-200 to-emerald-200 overflow-hidden"
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
       ref={containerRef}
+      style={{ fontFamily: 'Comic Sans MS, cursive' }}
     >
-      {/* Zoom Controls */}
-      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+      {/* Comic-style Border */}
+      <div className="absolute inset-0 pointer-events-none border-8 border-black z-50" style={{
+        boxShadow: 'inset 0 0 0 4px white, inset 0 0 0 8px black'
+      }} />
+
+      {/* Zoom Controls - Comic Style */}
+      <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
         <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.85 }}
           onClick={handleZoomIn}
-          className="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-xl hover:shadow-2xl hover:bg-white transition-all border border-slate-200"
+          className="bg-yellow-400 p-2.5 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all border-3 border-black font-black"
           aria-label="Zoom in"
         >
-          <ZoomIn className="w-5 h-5 text-slate-700" />
+          <ZoomIn className="w-4 h-4 text-black" strokeWidth={3} />
         </motion.button>
         <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.85 }}
           onClick={handleZoomOut}
-          className="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-xl hover:shadow-2xl hover:bg-white transition-all border border-slate-200"
+          className="bg-yellow-400 p-2.5 rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all border-3 border-black font-black"
           aria-label="Zoom out"
         >
-          <ZoomOut className="w-5 h-5 text-slate-700" />
+          <ZoomOut className="w-4 h-4 text-black" strokeWidth={3} />
         </motion.button>
-        <div className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-xl text-sm font-bold text-slate-700 border border-slate-200">
+        <div className="bg-white px-2 py-1 rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-[10px] font-black text-black border-2 border-black">
           {Math.round(zoom * 100)}%
         </div>
       </div>
@@ -185,34 +190,35 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Map Background - Updated to use accurate map */}
-        <div className="absolute inset-0 pointer-events-none">
-          <Image
-            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Screenshot-2025-11-05-093914-1762321448814.png"
-            alt="Interactive Map"
-            fill
-            className="object-contain"
-            priority
-            draggable={false}
-          />
+        {/* Simplified Map Background - Green lands and Blue water */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-300 to-blue-500">
+          {/* Land masses with comic-style green */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {/* Simple land representation */}
+            <path
+              d="M 10 40 Q 20 35, 30 40 L 35 50 Q 40 55, 50 50 L 60 45 Q 70 40, 80 45 L 85 60 Q 80 70, 70 75 L 60 80 Q 50 85, 40 80 L 30 75 Q 20 70, 15 60 Z"
+              fill="#22c55e"
+              stroke="black"
+              strokeWidth="0.5"
+              className="drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
+            />
+            <path
+              d="M 85 30 Q 90 25, 95 30 L 98 40 Q 95 50, 90 48 L 85 45 Z"
+              fill="#16a34a"
+              stroke="black"
+              strokeWidth="0.5"
+              className="drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
+            />
+          </svg>
         </div>
 
-        {/* Connection Lines */}
+        {/* Connection Lines - Comic Style */}
         {selectedCity && (
           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
             <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
-                <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.3" />
-              </linearGradient>
-              <filter id="lineGlow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
+              <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <polygon points="0 0, 6 3, 0 6" fill="black" />
+              </marker>
             </defs>
             {getConnectedCities(selectedCity).map((connectedCity) => {
               const x1 = `${selectedCity.x}%`;
@@ -226,21 +232,21 @@ export default function InteractiveMap() {
                   y1={y1}
                   x2={x2}
                   y2={y2}
-                  stroke="url(#lineGradient)"
-                  strokeWidth="4"
-                  strokeDasharray="10 5"
-                  filter="url(#lineGlow)"
+                  stroke="black"
+                  strokeWidth="3"
+                  strokeDasharray="8 4"
+                  markerEnd="url(#arrowhead)"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
+                  animate={{ pathLength: 1, opacity: 0.8 }}
                   exit={{ pathLength: 0, opacity: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  transition={{ duration: 0.5 }}
                 />
               );
             })}
           </svg>
         )}
 
-        {/* City Markers */}
+        {/* City Markers - Comic Style */}
         {cities.map((city) => {
           const CityIcon = city.icon;
           const isSelected = selectedCity?.name === city.name;
@@ -259,97 +265,63 @@ export default function InteractiveMap() {
               onHoverStart={() => setHoveredCity(city)}
               onHoverEnd={() => setHoveredCity(null)}
               onClick={() => handleCityClick(city)}
-              whileHover={{ scale: 1.25 }}
+              whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
             >
-              {/* City Icon Marker with Enhanced Styling */}
               <motion.div
-                className="relative flex items-center gap-2"
+                className="relative flex items-center gap-1.5"
                 animate={{
-                  scale: isSelected ? 1.6 : hoveredCity?.name === city.name ? 1.35 : isConnected ? 1.25 : 1,
+                  scale: isSelected ? 1.4 : hoveredCity?.name === city.name ? 1.2 : isConnected ? 1.15 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                {/* Outer Glow Ring */}
-                <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-xl`}
-                  animate={{
-                    scale: isSelected ? [1, 2.5, 1] : [1, 2, 1],
-                    opacity: isSelected ? [0.8, 0.3, 0.8] : [0.6, 0.1, 0.6],
-                  }}
-                  transition={{
-                    duration: isSelected ? 2 : 2.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                
-                {/* Middle Glow */}
-                <motion.div
-                  className={`absolute inset-0 ${city.glowColor} rounded-full blur-md opacity-70`}
-                  animate={{
-                    scale: [1, 1.5, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                />
-
-                {/* Icon Container with Background */}
-                <div className={`relative bg-white rounded-full p-2 shadow-2xl border-2 ${city.borderColor}`}>
+                {/* Icon with comic border */}
+                <div className={`relative bg-white rounded-full p-1.5 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}>
                   <CityIcon 
-                    className={`w-7 h-7 ${city.iconColor}`} 
+                    className="w-5 h-5 text-black" 
                     strokeWidth={2.5}
-                    fill="currentColor"
-                    fillOpacity={0.2}
                   />
+                  {isSelected && (
+                    <motion.div
+                      className="absolute -inset-1 border-3 border-yellow-400 rounded-full"
+                      animate={{ 
+                        scale: [1, 1.3, 1],
+                        opacity: [1, 0, 1]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                      }}
+                    />
+                  )}
                 </div>
 
-                {/* City Name Label - Always Visible */}
-                <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 whitespace-nowrap bg-gradient-to-r from-amber-900 to-amber-800 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-lg border border-amber-700 pointer-events-none">
-                  {city.name}
+                {/* City Name Label - Small Comic Text */}
+                <div className="bg-white px-1.5 py-0.5 rounded border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] whitespace-nowrap">
+                  <span className="text-[9px] font-black text-black uppercase tracking-tight">
+                    {city.name}
+                  </span>
                 </div>
-
-                {/* Selection Ring */}
-                {isSelected && (
-                  <motion.div
-                    className={`absolute inset-0 border-4 ${city.borderColor} rounded-full`}
-                    initial={{ scale: 1, opacity: 0 }}
-                    animate={{ 
-                      scale: [1, 1.8, 1],
-                      opacity: [0.8, 0, 0.8]
-                    }}
-                    transition={{
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "easeOut"
-                    }}
-                  />
-                )}
               </motion.div>
             </motion.div>
           );
         })}
       </motion.div>
 
-      {/* Title Overlay with Enhanced Design */}
+      {/* Title - Comic Style */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="absolute top-8 right-8 left-8 text-center md:left-auto md:right-8 md:text-right z-20 pointer-events-none"
+        className="absolute top-6 right-6 z-20 pointer-events-none"
       >
-        <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 bg-clip-text text-transparent drop-shadow-2xl mb-2">
-          Ancient Trade Routes
-        </h1>
-        <p className="text-lg md:text-xl text-slate-800 drop-shadow-lg font-semibold">
-          Explore historic cities along the Silk Road and beyond
-        </p>
+        <div className="bg-yellow-300 px-4 py-2 rounded-lg border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rotate-2">
+          <h1 className="text-xl font-black text-black uppercase tracking-tight">
+            Trade Routes!
+          </h1>
+        </div>
       </motion.div>
 
-      {/* City Details Panel - Compact Bottom Panel */}
+      {/* City Details Panel - Comic Style */}
       <AnimatePresence>
         {selectedCity && (
           <motion.div
@@ -357,58 +329,52 @@ export default function InteractiveMap() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-2xl bg-white/98 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden z-30 border border-slate-200 mx-4"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-xl bg-white rounded-xl border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-30 mx-4"
           >
             <div className="flex flex-col">
               {/* Header */}
-              <div className={`${selectedCity.bgColor} p-4 text-white relative flex items-center justify-between`}>
-                <div className="flex items-center gap-3">
+              <div className="bg-yellow-300 p-3 relative flex items-center justify-between border-b-4 border-black">
+                <div className="flex items-center gap-2">
                   {(() => {
                     const Icon = selectedCity.icon;
-                    return <Icon className="w-8 h-8" strokeWidth={2} />;
+                    return <Icon className="w-6 h-6 text-black" strokeWidth={2.5} />;
                   })()}
                   <div>
-                    <h2 className="text-xl font-bold">{selectedCity.name}</h2>
-                    <p className="text-white/95 text-sm">{selectedCity.description}</p>
+                    <h2 className="text-base font-black text-black uppercase">{selectedCity.name}</h2>
+                    <p className="text-[10px] font-bold text-black">{selectedCity.description}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedCity(null)}
-                  className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-1 bg-red-500 hover:bg-red-600 rounded border-2 border-black transition-colors"
                   aria-label="Close"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 text-black" strokeWidth={3} />
                 </button>
               </div>
 
-              {/* Content - Horizontal Scroll */}
-              <div className="p-4">
-                <h3 className="text-sm font-bold text-slate-600 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <div className="w-1 h-4 bg-amber-500 rounded-full" />
-                  Connected Cities ({getConnectedCities(selectedCity).length})
+              {/* Content */}
+              <div className="p-3">
+                <h3 className="text-[10px] font-black text-black uppercase mb-2">
+                  ⚡ Connections ({getConnectedCities(selectedCity).length})
                 </h3>
-                <div className="flex gap-3 overflow-x-auto pb-2">
+                <div className="flex gap-2 overflow-x-auto pb-1">
                   {getConnectedCities(selectedCity).map((connectedCity) => {
                     const ConnectedIcon = connectedCity.icon;
                     return (
                       <motion.button
                         key={connectedCity.name}
-                        whileHover={{ scale: 1.05, y: -4 }}
+                        whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setSelectedCity(connectedCity)}
-                        className="flex-shrink-0 flex flex-col items-center gap-2 p-3 bg-gradient-to-br from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 rounded-xl transition-all shadow-md hover:shadow-lg border border-slate-200 min-w-[120px]"
+                        className="flex-shrink-0 flex flex-col items-center gap-1 p-2 bg-blue-200 hover:bg-blue-300 rounded-lg border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all min-w-[90px]"
                       >
-                        <div className={`p-3 ${connectedCity.bgColor} rounded-xl shadow-md`}>
-                          <ConnectedIcon className="w-6 h-6 text-white" strokeWidth={2.5} />
+                        <div className="p-1.5 bg-white rounded-lg border-2 border-black">
+                          <ConnectedIcon className="w-4 h-4 text-black" strokeWidth={2.5} />
                         </div>
-                        <div className="text-center">
-                          <div className="font-bold text-slate-900 text-sm">
-                            {connectedCity.name}
-                          </div>
-                          <div className="text-xs text-slate-600 mt-0.5 line-clamp-2">
-                            {connectedCity.description}
-                          </div>
-                        </div>
+                        <span className="text-[9px] font-black text-black uppercase text-center">
+                          {connectedCity.name}
+                        </span>
                       </motion.button>
                     );
                   })}
