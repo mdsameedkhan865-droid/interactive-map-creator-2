@@ -5,26 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Building2, 
   Ship, 
-  Palmtree, 
-  Landmark,
-  BookOpen,
-  Castle,
-  Moon,
-  Church,
-  Factory,
-  Triangle,
-  Crown,
-  Anchor,
-  Store,
-  Mountain,
-  Flame,
-  Sun,
+  Plane,
+  Home,
   ZoomIn,
   ZoomOut,
   X,
   Navigation,
   Play,
-  Pause
+  Pause,
+  BookOpen,
+  Moon
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import Image from "next/image";
@@ -50,7 +40,7 @@ const cities: City[] = [
     distance: "~8,150 km",
     routeType: "Sea Route",
     pilgrimageNote: "Indonesian pilgrims historically traveled by sea through the Indian Ocean, stopping at ports in India and Arabia.",
-    icon: Ship, 
+    icon: Plane, 
     bgColor: "bg-rose-600", 
     iconColor: "text-rose-50"
   },
@@ -60,7 +50,7 @@ const cities: City[] = [
     distance: "~7,620 km",
     routeType: "Sea Route",
     pilgrimageNote: "Malaysian Hajj caravans sailed through the Strait of Malacca, a vital maritime corridor for centuries.",
-    icon: Landmark, 
+    icon: Plane, 
     bgColor: "bg-red-600", 
     iconColor: "text-red-50"
   },
@@ -72,7 +62,7 @@ const cities: City[] = [
     distance: "~4,560 km",
     routeType: "Sea & Land Route",
     pilgrimageNote: "Bengali pilgrims journeyed via Bengal ports or overland through India and Persia.",
-    icon: Factory, 
+    icon: Plane, 
     bgColor: "bg-violet-600", 
     iconColor: "text-violet-50"
   },
@@ -82,7 +72,7 @@ const cities: City[] = [
     distance: "~3,280 km",
     routeType: "Land Route",
     pilgrimageNote: "Pilgrims from the Indian subcontinent traveled the ancient Silk Road through Persia.",
-    icon: Crown, 
+    icon: Building2, 
     bgColor: "bg-purple-600", 
     iconColor: "text-purple-50"
   },
@@ -104,7 +94,7 @@ const cities: City[] = [
     distance: "~4,130 km",
     routeType: "Silk Road (Land)",
     pilgrimageNote: "Central Asian pilgrims traveled the historic Silk Road through Persia to reach Arabia.",
-    icon: Sun, 
+    icon: Building2, 
     bgColor: "bg-yellow-700", 
     iconColor: "text-yellow-50"
   },
@@ -114,7 +104,7 @@ const cities: City[] = [
     distance: "~3,570 km",
     routeType: "Mountain Pass Route",
     pilgrimageNote: "Afghan pilgrims crossed the Hindu Kush and traversed Persia on their spiritual journey.",
-    icon: Mountain, 
+    icon: Building2, 
     bgColor: "bg-fuchsia-600", 
     iconColor: "text-fuchsia-50"
   },
@@ -124,7 +114,7 @@ const cities: City[] = [
     distance: "~3,290 km",
     routeType: "Caspian Route",
     pilgrimageNote: "Caucasian pilgrims traveled south through Persia along ancient trade corridors.",
-    icon: Flame, 
+    icon: Building2, 
     bgColor: "bg-orange-700", 
     iconColor: "text-orange-50"
   },
@@ -136,7 +126,7 @@ const cities: City[] = [
     distance: "~2,140 km",
     routeType: "Persian Route",
     pilgrimageNote: "Persian pilgrims followed ancient caravan routes through the Zagros Mountains.",
-    icon: Mountain, 
+    icon: Building2, 
     bgColor: "bg-pink-600", 
     iconColor: "text-pink-50"
   },
@@ -146,7 +136,7 @@ const cities: City[] = [
     distance: "~1,050 km",
     routeType: "Mesopotamian Route",
     pilgrimageNote: "Baghdad was a major gathering point for pilgrims traveling the Darb Zubaydah.",
-    icon: BookOpen, 
+    icon: Building2, 
     bgColor: "bg-amber-700", 
     iconColor: "text-amber-50"
   },
@@ -156,7 +146,7 @@ const cities: City[] = [
     distance: "~1,380 km",
     routeType: "Levantine Route",
     pilgrimageNote: "Syrian pilgrims took the ancient Darb al-Hajj caravan route through the desert.",
-    icon: Store, 
+    icon: Building2, 
     bgColor: "bg-stone-600", 
     iconColor: "text-stone-50"
   },
@@ -166,7 +156,7 @@ const cities: City[] = [
     distance: "~1,910 km",
     routeType: "Anatolian Route",
     pilgrimageNote: "Anatolian pilgrims journeyed south through Syria to reach the Hijaz.",
-    icon: Castle, 
+    icon: Building2, 
     bgColor: "bg-red-700", 
     iconColor: "text-red-50"
   },
@@ -176,7 +166,7 @@ const cities: City[] = [
     distance: "~2,430 km",
     routeType: "Ottoman Imperial Route",
     pilgrimageNote: "The Ottoman Sultan's annual pilgrimage caravan was a grand procession.",
-    icon: Church, 
+    icon: Building2, 
     bgColor: "bg-cyan-700", 
     iconColor: "text-cyan-50"
   },
@@ -188,7 +178,7 @@ const cities: City[] = [
     distance: "~340 km",
     routeType: "Sacred Route",
     pilgrimageNote: "The Prophet's city, many pilgrims visit before or after Hajj.",
-    icon: Moon, 
+    icon: Home, 
     bgColor: "bg-emerald-700", 
     iconColor: "text-emerald-50"
   },
@@ -198,7 +188,7 @@ const cities: City[] = [
     distance: "~1,240 km",
     routeType: "Holy Land Route",
     pilgrimageNote: "Pilgrims often visited Al-Aqsa Mosque before continuing to Mecca.",
-    icon: Church, 
+    icon: Building2, 
     bgColor: "bg-sky-600", 
     iconColor: "text-sky-50"
   },
@@ -208,7 +198,7 @@ const cities: City[] = [
     distance: "~830 km",
     routeType: "Yemeni Highland Route",
     pilgrimageNote: "Yemeni pilgrims crossed the Arabian highlands, a journey steeped in tradition.",
-    icon: Castle, 
+    icon: Building2, 
     bgColor: "bg-orange-600", 
     iconColor: "text-orange-50"
   },
@@ -220,7 +210,7 @@ const cities: City[] = [
     distance: "~1,240 km",
     routeType: "Egyptian Caravan",
     pilgrimageNote: "The Mahmal procession from Cairo was one of the most famous pilgrimage caravans.",
-    icon: Triangle, 
+    icon: Building2, 
     bgColor: "bg-amber-600", 
     iconColor: "text-amber-50"
   },
@@ -230,7 +220,7 @@ const cities: City[] = [
     distance: "~2,490 km",
     routeType: "North African Route",
     pilgrimageNote: "Libyan pilgrims journeyed east through the coastal route or across the Sahara.",
-    icon: Anchor, 
+    icon: Ship, 
     bgColor: "bg-slate-600", 
     iconColor: "text-slate-50"
   },
@@ -240,7 +230,7 @@ const cities: City[] = [
     distance: "~3,070 km",
     routeType: "Maghrebi Route",
     pilgrimageNote: "Tunisian pilgrims joined great caravans crossing North Africa.",
-    icon: Palmtree, 
+    icon: Plane, 
     bgColor: "bg-teal-700", 
     iconColor: "text-teal-50"
   },
@@ -250,7 +240,7 @@ const cities: City[] = [
     distance: "~3,560 km",
     routeType: "Maghrebi Route",
     pilgrimageNote: "Algerian pilgrims crossed the vast Sahara in organized caravans.",
-    icon: Landmark, 
+    icon: Plane, 
     bgColor: "bg-blue-700", 
     iconColor: "text-blue-50"
   },
@@ -260,7 +250,7 @@ const cities: City[] = [
     distance: "~4,010 km",
     routeType: "Trans-Saharan Route",
     pilgrimageNote: "Moroccan pilgrims embarked on the arduous trans-Saharan journey.",
-    icon: BookOpen, 
+    icon: Plane, 
     bgColor: "bg-blue-600", 
     iconColor: "text-blue-50"
   },
@@ -272,7 +262,7 @@ const cities: City[] = [
     distance: "~4,390 km",
     routeType: "Trans-Saharan Caravan",
     pilgrimageNote: "The legendary trans-Saharan pilgrimage route from West Africa, immortalized by Mansa Musa.",
-    icon: BookOpen, 
+    icon: Building2, 
     bgColor: "bg-yellow-600", 
     iconColor: "text-yellow-50"
   },
@@ -282,7 +272,7 @@ const cities: City[] = [
     distance: "~3,680 km",
     routeType: "Trans-Saharan Route",
     pilgrimageNote: "Kano was a major staging point for West African Hajj caravans.",
-    icon: Castle, 
+    icon: Building2, 
     bgColor: "bg-lime-600", 
     iconColor: "text-lime-50"
   },
@@ -292,7 +282,7 @@ const cities: City[] = [
     distance: "~1,640 km",
     routeType: "Nile Route",
     pilgrimageNote: "Sudanese pilgrims traveled the Nile route or crossed the Red Sea.",
-    icon: Anchor, 
+    icon: Ship, 
     bgColor: "bg-cyan-600", 
     iconColor: "text-cyan-50"
   },
@@ -312,7 +302,7 @@ const cities: City[] = [
     distance: "~3,840 km",
     routeType: "Swahili Coast Route",
     pilgrimageNote: "East African pilgrims embarked from Swahili ports on dhows bound for Arabia.",
-    icon: Palmtree, 
+    icon: Ship, 
     bgColor: "bg-emerald-600", 
     iconColor: "text-emerald-50"
   },
