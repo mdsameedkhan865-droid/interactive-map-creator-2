@@ -250,7 +250,7 @@ export default function InteractiveMap() {
       {/* Map Background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/063dddeb-85b0-4ba1-bd6a-66de9af690b5/generated_images/a-detailed-2d-illustrated-fantasy-map-sh-001572b5-20251106070244.jpg"
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Generated-Image-November-09-2025-10_10PM-1762708312524.png?width=8000&height=8000&resize=contain"
           alt="Route to Mecca - Pilgrimage Map"
           fill
           className="object-cover opacity-95"
