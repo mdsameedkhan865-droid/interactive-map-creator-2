@@ -18,39 +18,63 @@ interface City {
   lon: number;
 }
 
-// Helper function to get the appropriate icon for each city
-function getCityIcon(cityName: string): string {
-  const iconMap: Record<string, string> = {
-    "Jakarta": "🇮🇩",
-    "Dar es Salaam": "🇹🇿",
-    "Mogadishu": "🇸🇴",
-    "Kuala Lumpur": "🇲🇾",
-    "Timbuktu": "🇲🇱",
-    "Kano": "🇳🇬",
-    "Khartoum": "🇸🇩",
-    "Sana'a": "🇾🇪",
-    "Mecca": "🕋",
-    "Medina": "🇸🇦",
-    "Karachi": "🇵🇰",
-    "Dhaka": "🇧🇩",
-    "Cairo": "🇪🇬",
-    "Jerusalem": "🇵🇸",
-    "Lahore": "🇵🇰",
-    "Fez": "🇲🇦",
-    "Tripoli": "🇱🇾",
-    "Damascus": "🇸🇾",
-    "Baghdad": "🇮🇶",
-    "Tehran": "🇮🇷",
-    "Kabul": "🇦🇫",
-    "Algiers": "🇩🇿",
-    "Tunis": "🇹🇳",
-    "Diyarbakir": "🇹🇷",
-    "Istanbul": "🇹🇷",
-    "Baku": "🇦🇿",
-    "Tashkent": "🇺🇿"
+// Helper function to get the appropriate icon/color for each city
+function getCityMarker(cityName: string): { icon?: string; color: string; ring: string } {
+  // Kaaba gets special emoji treatment
+  if (cityName === "Mecca") {
+    return { icon: "🕋", color: "bg-amber-500", ring: "ring-amber-600" };
+  }
+  
+  // Color coding by region
+  const markerMap: Record<string, { color: string; ring: string }> = {
+    // Southeast Asia - Blue
+    "Jakarta": { color: "bg-blue-500", ring: "ring-blue-600" },
+    "Kuala Lumpur": { color: "bg-blue-500", ring: "ring-blue-600" },
+    "Dhaka": { color: "bg-blue-500", ring: "ring-blue-600" },
+    
+    // East Africa - Green
+    "Dar es Salaam": { color: "bg-green-500", ring: "ring-green-600" },
+    "Mogadishu": { color: "bg-green-500", ring: "ring-green-600" },
+    "Khartoum": { color: "bg-green-500", ring: "ring-green-600" },
+    
+    // West Africa - Emerald
+    "Timbuktu": { color: "bg-emerald-500", ring: "ring-emerald-600" },
+    "Kano": { color: "bg-emerald-500", ring: "ring-emerald-600" },
+    
+    // North Africa - Teal
+    "Cairo": { color: "bg-teal-500", ring: "ring-teal-600" },
+    "Tripoli": { color: "bg-teal-500", ring: "ring-teal-600" },
+    "Algiers": { color: "bg-teal-500", ring: "ring-teal-600" },
+    "Tunis": { color: "bg-teal-500", ring: "ring-teal-600" },
+    "Fez": { color: "bg-teal-500", ring: "ring-teal-600" },
+    
+    // Arabian Peninsula - Red
+    "Medina": { color: "bg-red-500", ring: "ring-red-600" },
+    "Sana'a": { color: "bg-red-500", ring: "ring-red-600" },
+    
+    // Levant - Purple
+    "Jerusalem": { color: "bg-purple-500", ring: "ring-purple-600" },
+    "Damascus": { color: "bg-purple-500", ring: "ring-purple-600" },
+    
+    // Mesopotamia - Orange
+    "Baghdad": { color: "bg-orange-500", ring: "ring-orange-600" },
+    
+    // Persia/Central Asia - Pink
+    "Tehran": { color: "bg-pink-500", ring: "ring-pink-600" },
+    "Kabul": { color: "bg-pink-500", ring: "ring-pink-600" },
+    "Baku": { color: "bg-pink-500", ring: "ring-pink-600" },
+    "Tashkent": { color: "bg-pink-500", ring: "ring-pink-600" },
+    
+    // South Asia - Indigo
+    "Karachi": { color: "bg-indigo-500", ring: "ring-indigo-600" },
+    "Lahore": { color: "bg-indigo-500", ring: "ring-indigo-600" },
+    
+    // Anatolia - Violet
+    "Diyarbakir": { color: "bg-violet-500", ring: "ring-violet-600" },
+    "Istanbul": { color: "bg-violet-500", ring: "ring-violet-600" },
   };
   
-  return iconMap[cityName] || "📍";
+  return markerMap[cityName] || { color: "bg-gray-500", ring: "ring-gray-600" };
 }
 
 // Cities with actual geographic coordinates from the HTML
@@ -365,6 +389,7 @@ export default function InteractiveMap() {
               {cities.map((city, index) => {
                 const pos = latLonToPercent(city.lat, city.lon);
                 const isSelected = selectedCity?.name === city.name;
+                const marker = getCityMarker(city.name);
                 const isMecca = city.name === "Mecca";
                 
                 return (
@@ -381,20 +406,28 @@ export default function InteractiveMap() {
                     exit={{ opacity: 0, scale: 0 }}
                     transition={{ delay: 0.3 + index * 0.02, duration: 0.3 }}
                   >
-                    {/* Icon */}
+                    {/* Icon/Marker */}
                     <motion.div
                       className={`flex items-center justify-center cursor-pointer ${
-                        isMecca ? 'text-3xl' : 'text-2xl'
-                      } ${
-                        isSelected ? 'ring-4 ring-amber-400 rounded-full' : ''
+                        isSelected ? `ring-4 ${marker.ring}` : ''
                       }`}
                       style={{
-                        filter: isSelected ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))' : 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))',
+                        filter: isSelected 
+                          ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))' 
+                          : 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))',
                       }}
                       whileHover={{ scale: 1.3 }}
                       onClick={() => setSelectedCity(city)}
                     >
-                      {getCityIcon(city.name)}
+                      {marker.icon ? (
+                        // Kaaba emoji for Mecca
+                        <div className="text-4xl">
+                          {marker.icon}
+                        </div>
+                      ) : (
+                        // Colored circle for other cities
+                        <div className={`w-5 h-5 rounded-full ${marker.color} border-2 border-white shadow-lg`} />
+                      )}
                     </motion.div>
                     
                     {/* Label */}
