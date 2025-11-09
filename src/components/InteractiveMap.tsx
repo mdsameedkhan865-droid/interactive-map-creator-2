@@ -8,7 +8,17 @@ import {
   X,
   Navigation,
   BookOpen,
-  Map
+  Map,
+  Building2,
+  Castle,
+  Church,
+  Mountain,
+  Landmark,
+  Ship,
+  Palmtree,
+  Crown,
+  Star,
+  Home
 } from "lucide-react";
 import Image from "next/image";
 
@@ -18,63 +28,203 @@ interface City {
   lon: number;
 }
 
-// Helper function to get the appropriate icon/color for each city
-function getCityMarker(cityName: string): { icon?: string; color: string; ring: string } {
+// Helper function to get the appropriate icon for each city
+function getCityIcon(cityName: string): { icon: React.ReactNode; bgColor: string; iconColor: string; ring: string } {
   // Kaaba gets special emoji treatment
   if (cityName === "Mecca") {
-    return { icon: "🕋", color: "bg-amber-500", ring: "ring-amber-600" };
+    return { 
+      icon: <span className="text-3xl">🕋</span>, 
+      bgColor: "bg-amber-500", 
+      iconColor: "text-white",
+      ring: "ring-amber-600" 
+    };
   }
   
-  // Color coding by region
-  const markerMap: Record<string, { color: string; ring: string }> = {
-    // Southeast Asia - Blue
-    "Jakarta": { color: "bg-blue-500", ring: "ring-blue-600" },
-    "Kuala Lumpur": { color: "bg-blue-500", ring: "ring-blue-600" },
-    "Dhaka": { color: "bg-blue-500", ring: "ring-blue-600" },
+  // Icon mapping for each city based on cultural/historical significance
+  const iconMap: Record<string, { icon: React.ReactNode; bgColor: string; iconColor: string; ring: string }> = {
+    // Arabian Peninsula - Mosques and Religious sites
+    "Medina": { 
+      icon: <Crown className="w-5 h-5" />, 
+      bgColor: "bg-emerald-600", 
+      iconColor: "text-white",
+      ring: "ring-emerald-700" 
+    },
+    "Sana'a": { 
+      icon: <Castle className="w-4 h-4" />, 
+      bgColor: "bg-rose-600", 
+      iconColor: "text-white",
+      ring: "ring-rose-700" 
+    },
     
-    // East Africa - Green
-    "Dar es Salaam": { color: "bg-green-500", ring: "ring-green-600" },
-    "Mogadishu": { color: "bg-green-500", ring: "ring-green-600" },
-    "Khartoum": { color: "bg-green-500", ring: "ring-green-600" },
+    // Levant - Historical Religious sites
+    "Jerusalem": { 
+      icon: <Star className="w-5 h-5" fill="currentColor" />, 
+      bgColor: "bg-yellow-500", 
+      iconColor: "text-white",
+      ring: "ring-yellow-600" 
+    },
+    "Damascus": { 
+      icon: <Landmark className="w-4 h-4" />, 
+      bgColor: "bg-purple-600", 
+      iconColor: "text-white",
+      ring: "ring-purple-700" 
+    },
     
-    // West Africa - Emerald
-    "Timbuktu": { color: "bg-emerald-500", ring: "ring-emerald-600" },
-    "Kano": { color: "bg-emerald-500", ring: "ring-emerald-600" },
+    // North Africa - Ancient monuments
+    "Cairo": { 
+      icon: <span className="text-xl">🔺</span>, 
+      bgColor: "bg-orange-500", 
+      iconColor: "text-white",
+      ring: "ring-orange-600" 
+    },
+    "Tripoli": { 
+      icon: <Ship className="w-4 h-4" />, 
+      bgColor: "bg-cyan-600", 
+      iconColor: "text-white",
+      ring: "ring-cyan-700" 
+    },
+    "Algiers": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-teal-600", 
+      iconColor: "text-white",
+      ring: "ring-teal-700" 
+    },
+    "Tunis": { 
+      icon: <Home className="w-4 h-4" />, 
+      bgColor: "bg-blue-600", 
+      iconColor: "text-white",
+      ring: "ring-blue-700" 
+    },
+    "Fez": { 
+      icon: <Castle className="w-4 h-4" />, 
+      bgColor: "bg-indigo-600", 
+      iconColor: "text-white",
+      ring: "ring-indigo-700" 
+    },
     
-    // North Africa - Teal
-    "Cairo": { color: "bg-teal-500", ring: "ring-teal-600" },
-    "Tripoli": { color: "bg-teal-500", ring: "ring-teal-600" },
-    "Algiers": { color: "bg-teal-500", ring: "ring-teal-600" },
-    "Tunis": { color: "bg-teal-500", ring: "ring-teal-600" },
-    "Fez": { color: "bg-teal-500", ring: "ring-teal-600" },
+    // West Africa - Trade cities
+    "Timbuktu": { 
+      icon: <Palmtree className="w-4 h-4" />, 
+      bgColor: "bg-amber-700", 
+      iconColor: "text-white",
+      ring: "ring-amber-800" 
+    },
+    "Kano": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-green-700", 
+      iconColor: "text-white",
+      ring: "ring-green-800" 
+    },
     
-    // Arabian Peninsula - Red
-    "Medina": { color: "bg-red-500", ring: "ring-red-600" },
-    "Sana'a": { color: "bg-red-500", ring: "ring-red-600" },
+    // East Africa - Coastal cities
+    "Dar es Salaam": { 
+      icon: <Ship className="w-4 h-4" />, 
+      bgColor: "bg-emerald-600", 
+      iconColor: "text-white",
+      ring: "ring-emerald-700" 
+    },
+    "Mogadishu": { 
+      icon: <Landmark className="w-4 h-4" />, 
+      bgColor: "bg-sky-600", 
+      iconColor: "text-white",
+      ring: "ring-sky-700" 
+    },
+    "Khartoum": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-lime-700", 
+      iconColor: "text-white",
+      ring: "ring-lime-800" 
+    },
     
-    // Levant - Purple
-    "Jerusalem": { color: "bg-purple-500", ring: "ring-purple-600" },
-    "Damascus": { color: "bg-purple-500", ring: "ring-purple-600" },
+    // Mesopotamia & Persia
+    "Baghdad": { 
+      icon: <Castle className="w-4 h-4" />, 
+      bgColor: "bg-orange-700", 
+      iconColor: "text-white",
+      ring: "ring-orange-800" 
+    },
+    "Tehran": { 
+      icon: <Mountain className="w-4 h-4" />, 
+      bgColor: "bg-pink-600", 
+      iconColor: "text-white",
+      ring: "ring-pink-700" 
+    },
+    "Kabul": { 
+      icon: <Mountain className="w-4 h-4" />, 
+      bgColor: "bg-stone-600", 
+      iconColor: "text-white",
+      ring: "ring-stone-700" 
+    },
     
-    // Mesopotamia - Orange
-    "Baghdad": { color: "bg-orange-500", ring: "ring-orange-600" },
+    // Central Asia
+    "Baku": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-cyan-700", 
+      iconColor: "text-white",
+      ring: "ring-cyan-800" 
+    },
+    "Tashkent": { 
+      icon: <Landmark className="w-4 h-4" />, 
+      bgColor: "bg-violet-600", 
+      iconColor: "text-white",
+      ring: "ring-violet-700" 
+    },
     
-    // Persia/Central Asia - Pink
-    "Tehran": { color: "bg-pink-500", ring: "ring-pink-600" },
-    "Kabul": { color: "bg-pink-500", ring: "ring-pink-600" },
-    "Baku": { color: "bg-pink-500", ring: "ring-pink-600" },
-    "Tashkent": { color: "bg-pink-500", ring: "ring-pink-600" },
+    // South Asia
+    "Karachi": { 
+      icon: <Ship className="w-4 h-4" />, 
+      bgColor: "bg-green-600", 
+      iconColor: "text-white",
+      ring: "ring-green-700" 
+    },
+    "Lahore": { 
+      icon: <Castle className="w-4 h-4" />, 
+      bgColor: "bg-red-600", 
+      iconColor: "text-white",
+      ring: "ring-red-700" 
+    },
+    "Dhaka": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-emerald-700", 
+      iconColor: "text-white",
+      ring: "ring-emerald-800" 
+    },
     
-    // South Asia - Indigo
-    "Karachi": { color: "bg-indigo-500", ring: "ring-indigo-600" },
-    "Lahore": { color: "bg-indigo-500", ring: "ring-indigo-600" },
+    // Southeast Asia
+    "Jakarta": { 
+      icon: <Building2 className="w-4 h-4" />, 
+      bgColor: "bg-blue-700", 
+      iconColor: "text-white",
+      ring: "ring-blue-800" 
+    },
+    "Kuala Lumpur": { 
+      icon: <Landmark className="w-4 h-4" />, 
+      bgColor: "bg-sky-700", 
+      iconColor: "text-white",
+      ring: "ring-sky-800" 
+    },
     
-    // Anatolia - Violet
-    "Diyarbakir": { color: "bg-violet-500", ring: "ring-violet-600" },
-    "Istanbul": { color: "bg-violet-500", ring: "ring-violet-600" },
+    // Anatolia
+    "Diyarbakir": { 
+      icon: <Castle className="w-4 h-4" />, 
+      bgColor: "bg-slate-600", 
+      iconColor: "text-white",
+      ring: "ring-slate-700" 
+    },
+    "Istanbul": { 
+      icon: <Church className="w-4 h-4" />, 
+      bgColor: "bg-red-700", 
+      iconColor: "text-white",
+      ring: "ring-red-800" 
+    },
   };
   
-  return markerMap[cityName] || { color: "bg-gray-500", ring: "ring-gray-600" };
+  return iconMap[cityName] || { 
+    icon: <Building2 className="w-4 h-4" />, 
+    bgColor: "bg-gray-600", 
+    iconColor: "text-white",
+    ring: "ring-gray-700" 
+  };
 }
 
 // Cities with actual geographic coordinates from the HTML
@@ -389,7 +539,7 @@ export default function InteractiveMap() {
               {cities.map((city, index) => {
                 const pos = latLonToPercent(city.lat, city.lon);
                 const isSelected = selectedCity?.name === city.name;
-                const marker = getCityMarker(city.name);
+                const cityIcon = getCityIcon(city.name);
                 const isMecca = city.name === "Mecca";
                 
                 return (
@@ -408,8 +558,8 @@ export default function InteractiveMap() {
                   >
                     {/* Icon/Marker */}
                     <motion.div
-                      className={`flex items-center justify-center cursor-pointer ${
-                        isSelected ? `ring-4 ${marker.ring}` : ''
+                      className={`flex items-center justify-center cursor-pointer rounded-full ${cityIcon.bgColor} p-2 border-2 border-white shadow-lg ${
+                        isSelected ? `ring-4 ${cityIcon.ring}` : ''
                       }`}
                       style={{
                         filter: isSelected 
@@ -419,15 +569,9 @@ export default function InteractiveMap() {
                       whileHover={{ scale: 1.3 }}
                       onClick={() => setSelectedCity(city)}
                     >
-                      {marker.icon ? (
-                        // Kaaba emoji for Mecca
-                        <div className="text-4xl">
-                          {marker.icon}
-                        </div>
-                      ) : (
-                        // Colored circle for other cities
-                        <div className={`w-5 h-5 rounded-full ${marker.color} border-2 border-white shadow-lg`} />
-                      )}
+                      <div className={cityIcon.iconColor}>
+                        {cityIcon.icon}
+                      </div>
                     </motion.div>
                     
                     {/* Label */}
