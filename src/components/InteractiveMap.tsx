@@ -33,10 +33,10 @@ function getCityIcon(cityName: string): { icon: React.ReactNode; bgColor: string
   // Kaaba gets special emoji treatment
   if (cityName === "Mecca") {
     return { 
-      icon: <span className="text-3xl">🕋</span>, 
-      bgColor: "bg-amber-500", 
+      icon: <span className="text-4xl">🕋</span>, 
+      bgColor: "bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600", 
       iconColor: "text-white",
-      ring: "ring-amber-600" 
+      ring: "ring-amber-500" 
     };
   }
   
@@ -556,19 +556,94 @@ export default function InteractiveMap() {
                     exit={{ opacity: 0, scale: 0 }}
                     transition={{ delay: 0.3 + index * 0.02, duration: 0.3 }}
                   >
+                    {/* Special Kaaba Highlight */}
+                    {isMecca && (
+                      <>
+                        {/* Pulsing Glow Rings */}
+                        <motion.div
+                          className="absolute inset-0 -m-8"
+                          animate={{
+                            scale: [1, 1.4, 1],
+                            opacity: [0.6, 0.2, 0.6],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          <div className="w-full h-full rounded-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 blur-xl opacity-80" />
+                        </motion.div>
+                        
+                        {/* Secondary Glow */}
+                        <motion.div
+                          className="absolute inset-0 -m-6"
+                          animate={{
+                            scale: [1, 1.3, 1],
+                            opacity: [0.8, 0.3, 0.8],
+                          }}
+                          transition={{
+                            duration: 2.5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 0.5
+                          }}
+                        >
+                          <div className="w-full h-full rounded-full bg-gradient-to-r from-yellow-300 to-amber-400 blur-lg" />
+                        </motion.div>
+
+                        {/* Radial Rays */}
+                        <div className="absolute inset-0 -m-10 pointer-events-none">
+                          {[...Array(8)].map((_, i) => (
+                            <motion.div
+                              key={i}
+                              className="absolute top-1/2 left-1/2 w-1 h-12 bg-gradient-to-t from-transparent via-yellow-400 to-transparent origin-bottom"
+                              style={{
+                                transform: `translate(-50%, -100%) rotate(${i * 45}deg)`,
+                              }}
+                              animate={{
+                                opacity: [0.4, 0.8, 0.4],
+                                scaleY: [0.8, 1.2, 0.8],
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: i * 0.1
+                              }}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
+
                     {/* Icon/Marker */}
                     <motion.div
-                      className={`flex items-center justify-center cursor-pointer rounded-full ${cityIcon.bgColor} p-2 border-2 border-white shadow-lg ${
-                        isSelected ? `ring-4 ${cityIcon.ring}` : ''
-                      }`}
+                      className={`relative flex items-center justify-center cursor-pointer rounded-full ${cityIcon.bgColor} ${
+                        isMecca ? 'p-4 border-4 border-white shadow-2xl' : 'p-2 border-2 border-white shadow-lg'
+                      } ${isSelected ? `ring-4 ${cityIcon.ring}` : ''}`}
                       style={{
-                        filter: isSelected 
+                        filter: isMecca
+                          ? 'drop-shadow(0 0 20px rgba(251, 191, 36, 0.9)) drop-shadow(0 0 40px rgba(251, 191, 36, 0.6))'
+                          : isSelected 
                           ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))' 
                           : 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))',
                       }}
-                      whileHover={{ scale: 1.3 }}
+                      whileHover={{ scale: isMecca ? 1.15 : 1.3 }}
+                      animate={isMecca ? {
+                        scale: [1, 1.05, 1],
+                      } : {}}
+                      transition={isMecca ? {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      } : {}}
                       onClick={() => setSelectedCity(city)}
                     >
+                      {/* Extra inner glow for Kaaba */}
+                      {isMecca && (
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-transparent" />
+                      )}
                       <div className={cityIcon.iconColor}>
                         {cityIcon.icon}
                       </div>
@@ -578,10 +653,12 @@ export default function InteractiveMap() {
                     <div 
                       className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none"
                       style={{
-                        textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff'
+                        textShadow: isMecca 
+                          ? '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 10px rgba(251, 191, 36, 0.8)'
+                          : '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff'
                       }}
                     >
-                      <span className={`font-semibold text-[#111] ${isMecca ? 'text-sm' : 'text-xs'}`}>
+                      <span className={`font-bold ${isMecca ? 'text-amber-900 text-base' : 'text-[#111]'} ${!isMecca && 'text-xs'}`}>
                         {city.name}
                       </span>
                     </div>
