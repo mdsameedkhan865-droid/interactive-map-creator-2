@@ -113,10 +113,6 @@ export default function InteractiveMap() {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Get Mecca coordinates
-  const meccaCity = cities.find(city => city.name === "Mecca");
-  const meccaPos = meccaCity ? latLonToPercent(meccaCity.lat, meccaCity.lon) : null;
-
   const handleZoomIn = () => {
     setZoom((prev) => Math.min(prev + 0.2, 3));
   };
@@ -316,42 +312,6 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Kaaba Marker at Mecca Position - Always Visible */}
-        {meccaPos && (
-          <motion.div
-            className="absolute z-25 pointer-events-none"
-            style={{
-              left: `${meccaPos.x}%`,
-              top: `${meccaPos.y}%`,
-              transform: "translate(-50%, -50%)",
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-          >
-            {/* Golden Glow Effect */}
-            <div className="absolute inset-0 -m-8">
-              <div className="w-16 h-16 bg-amber-400/30 rounded-full blur-xl animate-pulse" />
-            </div>
-            
-            {/* Kaaba Icon */}
-            <div className="relative w-12 h-12 bg-gradient-to-br from-amber-900 to-amber-950 rounded-lg shadow-2xl border-3 border-amber-600 flex items-center justify-center">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-700 to-amber-800 rounded-md" />
-              {/* Small crescent moon on top */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-amber-400 text-2xl">☪</div>
-            </div>
-            
-            {/* Mecca Label */}
-            <div 
-              className="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-900/90 px-3 py-1 rounded-full shadow-lg"
-            >
-              <span className="text-xs font-bold text-amber-100">
-                MECCA (KAABA)
-              </span>
-            </div>
-          </motion.div>
-        )}
-
         {/* Ancient Routes Overlay */}
         <AnimatePresence>
           {showRoutes && (
@@ -370,9 +330,6 @@ export default function InteractiveMap() {
               {cities.map((city, index) => {
                 const pos = latLonToPercent(city.lat, city.lon);
                 const isSelected = selectedCity?.name === city.name;
-                
-                // Skip Mecca since we have a special marker for it
-                if (city.name === "Mecca") return null;
                 
                 return (
                   <motion.div
