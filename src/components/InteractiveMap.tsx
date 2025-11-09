@@ -456,17 +456,6 @@ export default function InteractiveMap() {
       onMouseLeave={handleMouseUp}
       ref={containerRef}
     >
-      {/* Map Background */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Generated-Image-November-09-2025-10_10PM-1762708312524.png?width=8000&height=8000&resize=contain"
-          alt="Route to Mecca - Pilgrimage Map"
-          fill
-          className="object-cover opacity-95"
-          priority
-        />
-      </div>
-
       {/* Ornate Border Frame Overlay */}
       <div className="absolute inset-0 pointer-events-none z-10">
         <div className="absolute top-0 left-0 w-24 h-24 border-t-4 border-l-4 border-amber-700/40" />
@@ -521,6 +510,17 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
+        {/* Map Background - Now inside zoomable container */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Generated-Image-November-09-2025-10_10PM-1762708312524.png?width=8000&height=8000&resize=contain"
+            alt="Route to Mecca - Pilgrimage Map"
+            fill
+            className="object-cover opacity-95"
+            priority
+          />
+        </div>
+
         {/* Ancient Routes Overlay */}
         <AnimatePresence>
           {showRoutes && (
