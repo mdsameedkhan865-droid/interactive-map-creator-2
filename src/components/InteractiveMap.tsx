@@ -8,7 +8,6 @@ import {
   X,
   Navigation,
   BookOpen,
-  Moon,
   Map
 } from "lucide-react";
 import Image from "next/image";
@@ -148,9 +147,6 @@ export default function InteractiveMap() {
     setIsDragging(false);
   };
 
-  const MECCA_COORDS = { lat: 21.3891, lon: 40.0 };
-  const meccaPos = latLonToPercent(MECCA_COORDS.lat, MECCA_COORDS.lon);
-
   return (
     <div 
       className="relative w-full h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100 overflow-hidden"
@@ -226,67 +222,6 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Mecca (Kaaba) - Central Focus */}
-        <motion.div
-          className="absolute z-20"
-          style={{
-            left: `${meccaPos.x}%`,
-            top: `${meccaPos.y}%`,
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          {/* Radial Golden Glow */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-radial from-amber-400/60 via-yellow-500/30 to-transparent rounded-full blur-3xl"
-            style={{ width: "300px", height: "300px", left: "-150px", top: "-150px" }}
-            animate={{
-              scale: [1, 1.3, 1],
-              opacity: [0.6, 0.3, 0.6],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-
-          {/* Kaaba Icon Container */}
-          <motion.div
-            className="relative bg-gradient-to-br from-emerald-800 to-emerald-950 rounded-lg p-4 shadow-2xl border-4 border-amber-500"
-            animate={{
-              boxShadow: [
-                "0 0 20px rgba(251, 191, 36, 0.5)",
-                "0 0 40px rgba(251, 191, 36, 0.8)",
-                "0 0 20px rgba(251, 191, 36, 0.5)",
-              ],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <Moon className="w-12 h-12 text-amber-300" fill="currentColor" />
-          </motion.div>
-
-          {/* Mecca Label */}
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap">
-            <motion.div
-              className="bg-gradient-to-r from-amber-200 via-amber-100 to-amber-200 text-amber-950 px-6 py-2 rounded-lg text-base font-bold shadow-2xl border-3 border-amber-700"
-              animate={{
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              ☪ MECCA (KAABA) ☪
-            </motion.div>
-          </div>
-        </motion.div>
-
         {/* Ancient Routes Overlay */}
         <AnimatePresence>
           {showRoutes && (
@@ -373,22 +308,6 @@ export default function InteractiveMap() {
             </>
           )}
         </AnimatePresence>
-      </motion.div>
-
-      {/* Title */}
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute top-6 left-1/2 -translate-x-1/2 text-center z-20 pointer-events-none"
-      >
-        <div className="bg-gradient-to-br from-amber-100/98 via-amber-50/98 to-amber-100/98 backdrop-blur-lg px-8 py-4 rounded-2xl shadow-2xl border-3 border-amber-700/50">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-900 via-amber-700 to-amber-900 bg-clip-text text-transparent drop-shadow-lg mb-1">
-            ☪ Route to Mecca ☪
-          </h1>
-          <p className="text-sm md:text-base text-amber-900 font-semibold drop-shadow">
-            Historic Pilgrimage Routes from Around the World
-          </p>
-        </div>
       </motion.div>
 
       {/* Show Ancient Routes Button */}
