@@ -147,6 +147,96 @@ export default function InteractiveMap() {
     setIsDragging(false);
   };
 
+  // Helper function to draw railway track between two points
+  const drawRailwayTrack = (start: {x: number, y: number}, end: {x: number, y: number}, index: number) => {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const angle = Math.atan2(dy, dx);
+    
+    // Calculate perpendicular offset for parallel rails
+    const railOffset = 0.15; // Distance between rails in percentage
+    const perpX = -Math.sin(angle) * railOffset;
+    const perpY = Math.cos(angle) * railOffset;
+    
+    // Rail 1 (left rail)
+    const rail1Start = { x: start.x + perpX, y: start.y + perpY };
+    const rail1End = { x: end.x + perpX, y: end.y + perpY };
+    
+    // Rail 2 (right rail)
+    const rail2Start = { x: start.x - perpX, y: start.y - perpY };
+    const rail2End = { x: end.x - perpX, y: end.y - perpY };
+    
+    // Calculate number of ties based on route length
+    const tieCount = Math.max(3, Math.floor(length / 2));
+    const ties = [];
+    
+    for (let i = 0; i <= tieCount; i++) {
+      const t = i / tieCount;
+      const tieX = start.x + dx * t;
+      const tieY = start.y + dy * t;
+      
+      ties.push({
+        x1: tieX + perpX * 1.5,
+        y1: tieY + perpY * 1.5,
+        x2: tieX - perpX * 1.5,
+        y2: tieY - perpY * 1.5,
+      });
+    }
+    
+    return (
+      <g key={index}>
+        {/* Left Rail */}
+        <motion.line
+          x1={`${rail1Start.x}%`}
+          y1={`${rail1Start.y}%`}
+          x2={`${rail1End.x}%`}
+          y2={`${rail1End.y}%`}
+          stroke="#6b4423"
+          strokeWidth="2.5"
+          strokeOpacity="0.9"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          exit={{ pathLength: 0, opacity: 0 }}
+          transition={{ duration: 0.8, delay: index * 0.02 }}
+        />
+        
+        {/* Right Rail */}
+        <motion.line
+          x1={`${rail2Start.x}%`}
+          y1={`${rail2Start.y}%`}
+          x2={`${rail2End.x}%`}
+          y2={`${rail2End.y}%`}
+          stroke="#6b4423"
+          strokeWidth="2.5"
+          strokeOpacity="0.9"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          exit={{ pathLength: 0, opacity: 0 }}
+          transition={{ duration: 0.8, delay: index * 0.02 }}
+        />
+        
+        {/* Railroad Ties (Sleepers) */}
+        {ties.map((tie, tieIndex) => (
+          <motion.line
+            key={tieIndex}
+            x1={`${tie.x1}%`}
+            y1={`${tie.y1}%`}
+            x2={`${tie.x2}%`}
+            y2={`${tie.y2}%`}
+            stroke="#8b6f47"
+            strokeWidth="2"
+            strokeOpacity="0.75"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.75 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, delay: index * 0.02 + tieIndex * 0.02 }}
+          />
+        ))}
+      </g>
+    );
+  };
+
   return (
     <div 
       className="relative w-full h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-yellow-100 overflow-hidden"
@@ -226,40 +316,13 @@ export default function InteractiveMap() {
         <AnimatePresence>
           {showRoutes && (
             <>
-              {/* Route Lines */}
+              {/* Railway Track Lines */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 15 }}>
-                <defs>
-                  <filter id="routeGlow">
-                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-
                 {routes.map((route, index) => {
                   const start = latLonToPercent(route[0][0], route[0][1]);
                   const end = latLonToPercent(route[1][0], route[1][1]);
                   
-                  return (
-                    <motion.line
-                      key={index}
-                      x1={`${start.x}%`}
-                      y1={`${start.y}%`}
-                      x2={`${end.x}%`}
-                      y2={`${end.y}%`}
-                      stroke="#8b4513"
-                      strokeWidth="2"
-                      strokeOpacity="0.85"
-                      strokeDasharray="6,4"
-                      filter="url(#routeGlow)"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      exit={{ pathLength: 0, opacity: 0 }}
-                      transition={{ duration: 0.8, delay: index * 0.02 }}
-                    />
-                  );
+                  return drawRailwayTrack(start, end, index);
                 })}
               </svg>
 
