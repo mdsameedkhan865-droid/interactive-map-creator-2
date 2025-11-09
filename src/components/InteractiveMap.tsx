@@ -18,6 +18,41 @@ interface City {
   lon: number;
 }
 
+// Helper function to get the appropriate icon for each city
+function getCityIcon(cityName: string): string {
+  const iconMap: Record<string, string> = {
+    "Jakarta": "🇮🇩",
+    "Dar es Salaam": "🇹🇿",
+    "Mogadishu": "🇸🇴",
+    "Kuala Lumpur": "🇲🇾",
+    "Timbuktu": "🇲🇱",
+    "Kano": "🇳🇬",
+    "Khartoum": "🇸🇩",
+    "Sana'a": "🇾🇪",
+    "Mecca": "🕋",
+    "Medina": "🇸🇦",
+    "Karachi": "🇵🇰",
+    "Dhaka": "🇧🇩",
+    "Cairo": "🇪🇬",
+    "Jerusalem": "🇵🇸",
+    "Lahore": "🇵🇰",
+    "Fez": "🇲🇦",
+    "Tripoli": "🇱🇾",
+    "Damascus": "🇸🇾",
+    "Baghdad": "🇮🇶",
+    "Tehran": "🇮🇷",
+    "Kabul": "🇦🇫",
+    "Algiers": "🇩🇿",
+    "Tunis": "🇹🇳",
+    "Diyarbakir": "🇹🇷",
+    "Istanbul": "🇹🇷",
+    "Baku": "🇦🇿",
+    "Tashkent": "🇺🇿"
+  };
+  
+  return iconMap[cityName] || "📍";
+}
+
 // Cities with actual geographic coordinates from the HTML
 const cities: City[] = [
   { name: "Jakarta", lat: -6, lon: 106.8456 },
@@ -326,10 +361,11 @@ export default function InteractiveMap() {
                 })}
               </svg>
 
-              {/* City Dots and Labels */}
+              {/* City Icons and Labels */}
               {cities.map((city, index) => {
                 const pos = latLonToPercent(city.lat, city.lon);
                 const isSelected = selectedCity?.name === city.name;
+                const isMecca = city.name === "Mecca";
                 
                 return (
                   <motion.div
@@ -345,14 +381,21 @@ export default function InteractiveMap() {
                     exit={{ opacity: 0, scale: 0 }}
                     transition={{ delay: 0.3 + index * 0.02, duration: 0.3 }}
                   >
-                    {/* Dot */}
+                    {/* Icon */}
                     <motion.div
-                      className={`w-[18px] h-[18px] rounded-full bg-[#f3d36b] border-2 border-[#5b3a29] shadow-lg cursor-pointer ${
-                        isSelected ? 'ring-4 ring-amber-400' : ''
+                      className={`flex items-center justify-center cursor-pointer ${
+                        isMecca ? 'text-3xl' : 'text-2xl'
+                      } ${
+                        isSelected ? 'ring-4 ring-amber-400 rounded-full' : ''
                       }`}
+                      style={{
+                        filter: isSelected ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))' : 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))',
+                      }}
                       whileHover={{ scale: 1.3 }}
                       onClick={() => setSelectedCity(city)}
-                    />
+                    >
+                      {getCityIcon(city.name)}
+                    </motion.div>
                     
                     {/* Label */}
                     <div 
@@ -361,7 +404,7 @@ export default function InteractiveMap() {
                         textShadow: '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff'
                       }}
                     >
-                      <span className="text-xs font-semibold text-[#111]">
+                      <span className={`font-semibold text-[#111] ${isMecca ? 'text-sm' : 'text-xs'}`}>
                         {city.name}
                       </span>
                     </div>
