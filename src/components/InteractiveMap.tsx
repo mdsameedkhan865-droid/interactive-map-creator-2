@@ -227,81 +227,99 @@ function getCityIcon(cityName: string): { icon: React.ReactNode; bgColor: string
   };
 }
 
-// Cities with actual geographic coordinates from the HTML
+// Cities with positions matching the reference image
 const cities: City[] = [
-  { name: "Jakarta", lat: -6, lon: 106.8456 },
-  { name: "Dar es Salaam", lat: -6, lon: 39 },
-  { name: "Mogadishu", lat: 3.0, lon: 45.0 },
-  { name: "Kuala Lumpur", lat: 3.0, lon: 101.6869 },
-  { name: "Timbuktu", lat: 16.0, lon: -5.0 },
-  { name: "Kano", lat: 16.0, lon: 10.0 },
-  { name: "Khartoum", lat: 16.0, lon: 30.0 },
-  { name: "Sana'a", lat: 16.0, lon: 45.0 },
-  { name: "Mecca", lat: 21.3891, lon: 40.0 },
-  { name: "Medina", lat: 24.5247, lon: 39.5692 },
-  { name: "Karachi", lat: 24.0, lon: 67.0 },
-  { name: "Dhaka", lat: 24.0, lon: 90.4125 },
-  { name: "Cairo", lat: 31.0, lon: 30.0 },
-  { name: "Jerusalem", lat: 31.0, lon: 36.0 },
-  { name: "Lahore", lat: 31.0, lon: 74.3436 },
-  { name: "Fez", lat: 33.0, lon: -5.0 },
-  { name: "Tripoli", lat: 33.0, lon: 13.1913 },
-  { name: "Damascus", lat: 33.5138, lon: 36.2765 },
-  { name: "Baghdad", lat: 33.0, lon: 45.0 },
-  { name: "Tehran", lat: 33.0, lon: 50.0 },
-  { name: "Kabul", lat: 33.0, lon: 67.0 },
-  { name: "Algiers", lat: 37.0, lon: 3.0588 },
-  { name: "Tunis", lat: 37.0, lon: 10.0 },
-  { name: "Diyarbakir", lat: 37.0, lon: 40.0 },
-  { name: "Istanbul", lat: 41.0, lon: 30.0 },
-  { name: "Baku", lat: 41.0, lon: 50.0 },
-  { name: "Tashkent", lat: 41.0, lon: 67.0 }
+  { name: "Jakarta", lat: -6.2, lon: 106.8 },
+  { name: "Kuala Lumpur", lat: 3.1, lon: 101.7 },
+  { name: "Dar es Salaam", lat: -6.8, lon: 39.3 },
+  { name: "Mogadishu", lat: 2.0, lon: 45.3 },
+  { name: "Timbuktu", lat: 16.8, lon: -3.0 },
+  { name: "Kano", lat: 12.0, lon: 8.5 },
+  { name: "Khartoum", lat: 15.5, lon: 32.5 },
+  { name: "Sana'a", lat: 15.4, lon: 44.2 },
+  { name: "Mecca", lat: 21.4, lon: 39.8 },
+  { name: "Medina", lat: 24.5, lon: 39.6 },
+  { name: "Karachi", lat: 24.9, lon: 67.1 },
+  { name: "Dhaka", lat: 23.8, lon: 90.4 },
+  { name: "Cairo", lat: 30.0, lon: 31.2 },
+  { name: "Jerusalem", lat: 31.8, lon: 35.2 },
+  { name: "Lahore", lat: 31.5, lon: 74.3 },
+  { name: "Fez", lat: 34.0, lon: -5.0 },
+  { name: "Tripoli", lat: 32.9, lon: 13.2 },
+  { name: "Damascus", lat: 33.5, lon: 36.3 },
+  { name: "Baghdad", lat: 33.3, lon: 44.4 },
+  { name: "Tehran", lat: 35.7, lon: 51.4 },
+  { name: "Kabul", lat: 34.5, lon: 69.2 },
+  { name: "Algiers", lat: 36.8, lon: 3.1 },
+  { name: "Tunis", lat: 36.8, lon: 10.2 },
+  { name: "Diyarbakir", lat: 37.9, lon: 40.2 },
+  { name: "Istanbul", lat: 41.0, lon: 28.9 },
+  { name: "Baku", lat: 40.4, lon: 49.9 },
+  { name: "Tashkent", lat: 41.3, lon: 69.3 }
 ];
 
-// Route connections from the HTML
+// Route connections based on the reference image
 const routes = [
-  [[-6, 39], [3, 45]],
-  [[21.3891, 40], [24.5247, 39.5692]],
-  [[21.3891, 40], [33, 45]],
-  [[21.3891, 40], [16, 45]],
-  [[21.3891, 40], [16, 30]],
-  [[24.5247, 39.5692], [31, 36]],
-  [[24.5247, 39.5692], [31, 30]],
-  [[31, 36], [33.5138, 36.2765]],
-  [[31, 36], [31, 30]],
-  [[33.5138, 36.2765], [33, 45]],
-  [[33.5138, 36.2765], [41, 30]],
-  [[33.5138, 36.2765], [37, 40]],
-  [[33, 45], [33, 50]],
-  [[33, 45], [37, 40]],
-  [[31, 30], [41, 30]],
-  [[31, 30], [33, 13.1913]],
-  [[31, 30], [16, 30]],
-  [[41, 30], [41, 50]],
-  [[-6.2088, 106.8456], [3, 101.6869]],
-  [[24, 67], [33, 50]],
-  [[24, 67], [31, 74.3436]],
-  [[24, 90.4125], [31, 74.3436]],
-  [[24, 90.4125], [3, 101.6869]],
-  [[33, 50], [33, 67]],
-  [[33, 50], [41, 50]],
-  [[31, 74.3436], [33, 67]],
-  [[33, -5], [37, 3.0588]],
-  [[33, -5], [16, -5]],
-  [[41, 67], [33, 67]],
-  [[16, 45], [3, 45]],
-  [[33, 13.1913], [37, 10]],
-  [[37, 3.0588], [37, 10]],
-  [[16, -5], [16, 10]],
-  [[16, 30], [3, 45]],
-  [[16, 30], [16, 10]],
-  [[37, 40], [41, 30]],
-  [[37, 40], [41, 50]]
+  // North Africa routes
+  ["Fez", "Algiers"],
+  ["Fez", "Timbuktu"],
+  ["Algiers", "Tunis"],
+  ["Tunis", "Tripoli"],
+  ["Tripoli", "Cairo"],
+  
+  // Mediterranean/Middle East routes
+  ["Istanbul", "Diyarbakir"],
+  ["Istanbul", "Baku"],
+  ["Diyarbakir", "Damascus"],
+  ["Diyarbakir", "Baghdad"],
+  ["Diyarbakir", "Baku"],
+  ["Damascus", "Jerusalem"],
+  ["Damascus", "Baghdad"],
+  ["Baghdad", "Tehran"],
+  ["Baghdad", "Baku"],
+  
+  // Central routes through Arabia
+  ["Cairo", "Jerusalem"],
+  ["Cairo", "Mecca"],
+  ["Cairo", "Khartoum"],
+  ["Jerusalem", "Damascus"],
+  ["Jerusalem", "Mecca"],
+  ["Mecca", "Medina"],
+  ["Mecca", "Sana'a"],
+  ["Mecca", "Karachi"],
+  
+  // Central Asia routes
+  ["Baku", "Tehran"],
+  ["Baku", "Tashkent"],
+  ["Tehran", "Kabul"],
+  ["Tehran", "Tashkent"],
+  ["Tashkent", "Kabul"],
+  
+  // South Asia routes
+  ["Kabul", "Karachi"],
+  ["Kabul", "Lahore"],
+  ["Karachi", "Lahore"],
+  ["Lahore", "Dhaka"],
+  ["Karachi", "Dhaka"],
+  
+  // Southeast Asia routes
+  ["Dhaka", "Kuala Lumpur"],
+  ["Kuala Lumpur", "Jakarta"],
+  
+  // East Africa routes
+  ["Khartoum", "Sana'a"],
+  ["Khartoum", "Mogadishu"],
+  ["Khartoum", "Kano"],
+  ["Sana'a", "Mogadishu"],
+  ["Mogadishu", "Dar es Salaam"],
+  
+  // West Africa routes
+  ["Kano", "Timbuktu"],
 ];
 
 // Convert lat/lon to percentage position on map
 function latLonToPercent(lat: number, lon: number) {
-  // Map bounds approximation for the region
+  // Map bounds for better coverage of the reference image
   const minLat = -10;
   const maxLat = 45;
   const minLon = -10;
@@ -354,6 +372,11 @@ export default function InteractiveMap() {
 
   const handleMouseUp = () => {
     setIsDragging(false);
+  };
+
+  // Helper function to get city by name
+  const getCityByName = (name: string): City | undefined => {
+    return cities.find(city => city.name === name);
   };
 
   // Helper function to draw railway track between two points
@@ -510,7 +533,7 @@ export default function InteractiveMap() {
         }}
         transition={{ type: "tween", duration: 0.1 }}
       >
-        {/* Map Background - Now inside zoomable container */}
+        {/* Map Background */}
         <div className="absolute inset-0 z-0">
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/Generated-Image-November-09-2025-10_10PM-1762708312524.png?width=8000&height=8000&resize=contain"
@@ -528,8 +551,13 @@ export default function InteractiveMap() {
               {/* Railway Track Lines */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 15 }}>
                 {routes.map((route, index) => {
-                  const start = latLonToPercent(route[0][0], route[0][1]);
-                  const end = latLonToPercent(route[1][0], route[1][1]);
+                  const startCity = getCityByName(route[0]);
+                  const endCity = getCityByName(route[1]);
+                  
+                  if (!startCity || !endCity) return null;
+                  
+                  const start = latLonToPercent(startCity.lat, startCity.lon);
+                  const end = latLonToPercent(endCity.lat, endCity.lon);
                   
                   return drawRailwayTrack(start, end, index);
                 })}
